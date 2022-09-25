@@ -1,0 +1,9 @@
+a {
+    color : #555fdd;
+    text-align: center;
+}
+.MuiDataGrid-row{
+    cursor: pointer;
+}
+input[value=""]::-webkit-datetime-edit{ color: transparent; }
+input:focus::-webkit-datetime-edit{ color: #000; }

@@ -1,22 +1,20 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
-const launchApi = require("./api.js");
 
 app.disableHardwareAcceleration();
 let win = null;
-
-launchApi();
 
 const createWindow = () => {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth:800,
+    minHeight : 600,
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
-      contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true
     },
   });
 

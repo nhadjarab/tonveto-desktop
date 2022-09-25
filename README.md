@@ -1,5 +1,5 @@
 # School app : reactJs + electron Js
-A desktop app using electron js, react js sqlite as a database 
+A desktop app using electron js, react js material ui
 
 ## Developement setup
 
