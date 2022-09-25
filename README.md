@@ -1,4 +1,4 @@
-# School app : reactJs + electron Js
+# Tonveto Desktop : reactJs + electron Js
 A desktop app using electron js, react js material ui
 
 ## Developement setup
