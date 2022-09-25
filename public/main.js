@@ -11,10 +11,12 @@ const createWindow = () => {
     height: 600,
     minWidth:800,
     minHeight : 600,
+    icon : __dirname + "/favicon.ico" ,
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
-      contextIsolation: true
+      contextIsolation: true,
+      devTools: !app.isPackaged
     },
   });
 

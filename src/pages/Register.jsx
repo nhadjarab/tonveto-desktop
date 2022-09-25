@@ -93,6 +93,7 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          logged_in_id: userId,
         },
         body: JSON.stringify(updateUser),
       });
