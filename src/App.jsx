@@ -8,7 +8,10 @@ import {
   Appointements,
   User,
   SingleVet,
-  SingleClinic
+  SingleClinic,
+  PendingVet,
+  PendingClinic,
+  CommentReports
 } from "./pages";
 import { RequireAuth, RequireNotAuth, Layout, AuthLayout } from "./components";
 
@@ -36,9 +39,12 @@ const App = () => {
         <Route path="/users/:userId" element={<User />} />
         <Route path="/vets" element={<Vets />} />
         <Route path="/vets/:vetId" element={<SingleVet />} />
+        <Route path="/pending/vets" element={<PendingVet />} />
         <Route path="/clinics" element={<Clinics />} />
         <Route path="/clinics/:clinicId" element={<SingleClinic />} />
+        <Route path="/pending/clinics" element={<PendingClinic />} />
         <Route path="/appointements" element={<Appointements />} />
+        <Route path="/comment-reports" element={<CommentReports />} />
       </Route>
     </Routes>
   );

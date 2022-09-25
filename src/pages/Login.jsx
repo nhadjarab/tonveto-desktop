@@ -47,7 +47,14 @@ const Login = () => {
       }
       const token = loginData.jwtToken;
       const userId = loginData.adminProfile.id;
-      loginUser({ token, userId }, () => navigate("/home", { replace: true }));
+      const email = loginData.adminProfile.email;
+      const username =  (loginData.adminProfile.first_name ||  loginData.adminProfile.last_name) ?
+        loginData.adminProfile.first_name?.toUpperCase() +
+        " " +
+        loginData.adminProfile.last_name?.toUpperCase() :  "ADMIN";
+      loginUser({ token, userId, email,username }, () =>
+        navigate("/home", { replace: true })
+      );
     } catch (err) {
       console.error(err);
       setUserError("Something went wrong, please try again");
