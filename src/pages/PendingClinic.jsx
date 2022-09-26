@@ -4,7 +4,16 @@ import { frFR } from "@mui/x-data-grid/locales";
 import { CustomToolbar } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import { Typography, Alert, Button, LinearProgress } from "@mui/material";
+import {
+  Typography,
+  Alert,
+  Button,
+  LinearProgress,
+  CircularProgress,
+  Box,
+  Grid,
+  Paper,
+} from "@mui/material";
 
 const PendingClinic = () => {
   const [rows, setRows] = useState([]);
@@ -17,6 +26,7 @@ const PendingClinic = () => {
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchPendingClinics = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${apiUrl}/getAllClinicApplications`, {
           method: "GET",
@@ -29,6 +39,7 @@ const PendingClinic = () => {
         });
 
         const data = await res.json();
+        setLoading(false);
         console.log(data);
         if (res.status === 200) {
           setRows(data);
@@ -41,9 +52,9 @@ const PendingClinic = () => {
         setError("Something went wrong, please try again");
       }
     };
-    setLoading(true);
+
     fetchPendingClinics();
-    setLoading(false);
+
     return () => controller.abort();
   }, []);
 
@@ -103,11 +114,23 @@ const PendingClinic = () => {
       },
     },
   ];
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Pending Clinic Applications
+       # Liste Des Cliniques En Attente
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <div style={{ height: 450, width: "100%" }}>

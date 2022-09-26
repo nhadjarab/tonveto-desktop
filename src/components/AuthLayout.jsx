@@ -132,7 +132,7 @@ const AuthLayout = () => {
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  Logout
+                  Se Déconnecter
                 </MenuItem>
               </Menu>
             </Toolbar>
@@ -176,7 +176,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Users" />
+                  <ListItemText primary="Utilisateurs" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -184,7 +184,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Vets" />
+                  <ListItemText primary="vétérinaires" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -192,7 +192,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Clinics" />
+                  <ListItemText primary="Cliniques" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -200,7 +200,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Appointements" />
+                  <ListItemText primary="Rendez-vous" />
                 </ListItemButton>
               </ListItem>
             </List>
@@ -217,7 +217,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Pending Vets" />
+                  <ListItemText primary="Vet en attente" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -225,7 +225,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Pending Clinics" />
+                  <ListItemText primary="Cliniques en attente" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -233,7 +233,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Comment Reports" />
+                  <ListItemText primary="Commentaires" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -241,7 +241,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Invoices" />
+                  <ListItemText primary="Factures" />
                 </ListItemButton>
               </ListItem>
             </List>
@@ -253,13 +253,13 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#fff" }}>
                     <Logout />
                   </ListItemIcon>
-                  <ListItemText primary="Logout" />
+                  <ListItemText primary="Se Déconnecter" />
                 </ListItemButton>
               </ListItem>
             </List>
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 15 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 5, mt: 15 }}>
           <Outlet />
         </Box>
       </Box>

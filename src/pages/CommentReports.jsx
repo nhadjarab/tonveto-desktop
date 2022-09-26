@@ -11,13 +11,15 @@ import {
   Rating,
   Button,
   Stack,
-  LinearProgress
+  LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const CommentReports = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingHandleAction, setLoadingHandleAction] = useState(false);
   const [error, setError] = useState("");
   const { user } = useAuth();
   const { apiUrl } = useEnv();
@@ -30,70 +32,81 @@ const CommentReports = () => {
   const handleApproveCommentReport = async (row) => {
     const commentReportId = row.id;
     const commentId = row.comment_id;
-    const commentType = row.report_type
-    setLoading(true);
+    const commentType = row.report_type;
+    setLoadingHandleAction(true);
     try {
-      const res = await fetch(`${apiUrl}/approveCommentReport/${commentReportId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-          logged_in_id: user.userId,
-          commentType,
-          commentId
-        },
-      });
+      const res = await fetch(
+        `${apiUrl}/approveCommentReport/${commentReportId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+            logged_in_id: user.userId,
+            commentType,
+            commentId,
+          },
+        }
+      );
 
       const data = await res.json();
       console.log(data);
       if (res.status === 200) {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== commentReportId));
+        setRows((prevRows) =>
+          prevRows.filter((row) => row.id !== commentReportId)
+        );
       } else {
-        setError("Something went wrong, please try again");
+        setError(data);
       }
     } catch (err) {
       console.error(err);
       if (err.name === "AbortError") return;
       setError("Something went wrong, please try again");
     }
-    setLoading(false);
+    setLoadingHandleAction(false);
   };
   const handleRejectCommentReport = async (row) => {
     const commentReportId = row.id;
     const commentId = row.comment_id;
-    const commentType = row.report_type
-    setLoading(true);
+    const commentType = row.report_type;
+    setLoadingHandleAction(true);
     try {
-      const res = await fetch(`${apiUrl}/rejectCommentReport/${commentReportId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-          logged_in_id: user.userId,
-          commentType,
-          commentId
-        },
-      });
+      const res = await fetch(
+        `${apiUrl}/rejectCommentReport/${commentReportId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+            logged_in_id: user.userId,
+            commentType,
+            commentId,
+          },
+        }
+      );
 
       const data = await res.json();
       console.log(data);
       if (res.status === 200) {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== commentReportId));
+        setRows((prevRows) =>
+          prevRows.filter((row) => row.id !== commentReportId)
+        );
       } else {
-        setError("Something went wrong, please try again");
+        setError(data);
       }
     } catch (err) {
       console.error(err);
       if (err.name === "AbortError") return;
       setError("Something went wrong, please try again");
     }
-    setLoading(false);
+    setLoadingHandleAction(false);
   };
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchCommentReports = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${apiUrl}/getAllCommentReports`, {
           method: "GET",
@@ -107,6 +120,7 @@ const CommentReports = () => {
 
         const data = await res.json();
         console.log(data);
+        setLoading(false);
         if (res.status === 200) {
           setRows(data);
         } else {
@@ -118,19 +132,31 @@ const CommentReports = () => {
         setError("Something went wrong, please try again");
       }
     };
-    setLoading(true);
+
     fetchCommentReports();
-    setLoading(false);
+
     return () => controller.abort();
   }, []);
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Comment Reports
+        # Liste Des Rapports Des Commentaires
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
-      {loading && <LinearProgress />}
+      {loadingHandleAction && <LinearProgress />}
       <div>
         {rows.map((row) => (
           <Accordion

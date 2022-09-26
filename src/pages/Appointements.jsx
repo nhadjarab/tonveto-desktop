@@ -1,13 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { frFR } from "@mui/x-data-grid/locales";
 import { CustomToolbar } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import { Typography, Alert } from "@mui/material";
+import {
+  Typography,
+  Alert,
+  CircularProgress,
+  Box,
+  Grid,
+  Paper,
+} from "@mui/material";
 
 const columns = [
-
   { field: "user_name", headerName: "User", flex: 1 },
   { field: "user_email", headerName: "User Email", flex: 1 },
   { field: "pet_name", headerName: "Pet Name", flex: 1 },
@@ -27,11 +33,15 @@ const Appointements = () => {
   const [error, setError] = useState("");
   const { user } = useAuth();
   const { apiUrl } = useEnv();
+  const numberOfAppointments = useMemo(() => {
+    return rows.length;
+  }, [rows.length]);
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchUsers = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${apiUrl}/getAllAppointments`, {
           method: "GET",
@@ -47,34 +57,61 @@ const Appointements = () => {
         if (res.status === 200) {
           const appointements = data.map((appointement) => ({
             id: appointement.id,
-            user_name: appointement.user.first_name + " " + appointement.user.last_name,
+            user_name:
+              appointement.user.first_name + " " + appointement.user.last_name,
             user_email: appointement.user.email,
-            pet_name : appointement.pet.name,
-            breed : appointement.pet.breed,
-            sex : appointement.pet.sex,
-            vet_name : appointement.vet.first_name  + " " + appointement.vet.last_name,
+            pet_name: appointement.pet.name,
+            breed: appointement.pet.breed,
+            sex: appointement.pet.sex,
+            vet_name:
+              appointement.vet.first_name + " " + appointement.vet.last_name,
             vet_email: appointement.vet.email,
           }));
           setRows(appointements);
         } else {
           setError("Something went wrong, please try again");
         }
+        setLoading(false);
       } catch (err) {
         console.error(err);
         if (err.name === "AbortError") return;
         setError("Something went wrong, please try again");
       }
     };
-    setLoading(true);
+
     fetchUsers();
-    setLoading(false);
+
     return () => controller.abort();
   }, []);
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
+      <Grid container spacing={3} sx={{ marginBottom: 8 }}>
+        <Grid xs={6} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {numberOfAppointments}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Nombre De Rendez-Vous
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Liste Des Rendez vous
+        # Liste Des Rendez-vous
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <div style={{ height: 450, width: "100%" }}>

@@ -7,7 +7,6 @@ import {
   Container,
   Stack,
   TextField,
-  Button,
   Grid,
   Typography,
   Stepper,
@@ -15,6 +14,7 @@ import {
   StepLabel,
   Alert,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const steps = ["Créer un compte", "Compléter ses information"];
 
@@ -28,11 +28,13 @@ const Register = () => {
     first_name: "",
     last_name: "",
     email: "",
-    birth_date: "",
+    birth_date: "2000-08-06",
     phone_number: "",
   });
 
   const [newUserError, setNewUserError] = useState("");
+  const [loadingNext, setLoadingNext] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [updateUserError, setUpdateUserError] = useState("");
   const navigate = useNavigate();
   const { loginUser } = useAuth();
@@ -51,6 +53,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      setLoadingNext(true);
       const res = await fetch(`${apiUrl}/registerAdmin`, {
         method: "POST",
         headers: {
@@ -59,6 +62,7 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
       const data = await res.json();
+      setLoadingNext(false);
       if (res.status === 200) {
         setActiveStep(1);
       } else {
@@ -73,6 +77,7 @@ const Register = () => {
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
     try {
+      setLoadingUpdate(true);
       const loginResponse = await fetch(`${apiUrl}/loginAdmin`, {
         method: "POST",
         headers: {
@@ -87,19 +92,28 @@ const Register = () => {
       }
       const token = loginData.jwtToken;
       const userId = loginData.adminProfile.id;
+      const email = loginData.adminProfile.email;
+      const username =
+        loginData.adminProfile.first_name || loginData.adminProfile.last_name
+          ? loginData.adminProfile.first_name?.toUpperCase() +
+            " " +
+            loginData.adminProfile.last_name?.toUpperCase()
+          : "ADMIN";
+
       console.log(loginData);
+      console.log(updateUser);
       const res = await fetch(`${apiUrl}/user/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          logged_in_id: userId,
         },
         body: JSON.stringify(updateUser),
       });
       const data = await res.json();
+      setLoadingUpdate(false);
       if (res.status === 200) {
-        loginUser({ token, userId }, () =>
+        loginUser({ token, userId,email, username }, () =>
           navigate("/home", { replace: true })
         );
       } else {
@@ -171,9 +185,14 @@ const Register = () => {
                 <Link to="/">
                   Vous avez déja un compte? se connecter maintenant.
                 </Link>
-                <Button type="submit" size="large" variant="contained">
+                <LoadingButton
+                  loading={loadingNext}
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                >
                   Suivant
-                </Button>
+                </LoadingButton>
               </Stack>
             )}
 
@@ -192,6 +211,7 @@ const Register = () => {
                   label="Prénom"
                   variant="outlined"
                   name="first_name"
+                  inputProps={{ pattern: "[a-zA-Z]*" }}
                   type="text"
                   required
                   onChange={handleInputChange}
@@ -201,6 +221,7 @@ const Register = () => {
                   label="Nom"
                   variant="outlined"
                   name="last_name"
+                  inputProps={{ pattern: "[a-zA-Z]*" }}
                   type="text"
                   required
                   onChange={handleInputChange}
@@ -220,12 +241,19 @@ const Register = () => {
                   variant="outlined"
                   name="birth_date"
                   type="date"
+                  inputProps={{ min: "1930-01-01", max: "2004-12-31" }}
                   required
+                  defaultValue={updateUser.birth_date}
                   onChange={handleInputChange}
                 />
-                <Button type="submit" size="large" variant="contained">
+                <LoadingButton
+                  loading={loadingUpdate}
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                >
                   Confirmer
-                </Button>
+                </LoadingButton>
               </Stack>
             )}
           </Grid>

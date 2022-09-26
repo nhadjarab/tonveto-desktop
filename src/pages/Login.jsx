@@ -48,11 +48,13 @@ const Login = () => {
       const token = loginData.jwtToken;
       const userId = loginData.adminProfile.id;
       const email = loginData.adminProfile.email;
-      const username =  (loginData.adminProfile.first_name ||  loginData.adminProfile.last_name) ?
-        loginData.adminProfile.first_name?.toUpperCase() +
-        " " +
-        loginData.adminProfile.last_name?.toUpperCase() :  "ADMIN";
-      loginUser({ token, userId, email,username }, () =>
+      const username =
+        loginData.adminProfile.first_name || loginData.adminProfile.last_name
+          ? loginData.adminProfile.first_name?.toUpperCase() +
+            " " +
+            loginData.adminProfile.last_name?.toUpperCase()
+          : "ADMIN";
+      loginUser({ token, userId, email, username }, () =>
         navigate("/home", { replace: true })
       );
     } catch (err) {
@@ -100,6 +102,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 onChange={handleInputChange}
+                required
               />
               <TextField
                 id="password"
@@ -108,6 +111,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 onChange={handleInputChange}
+                required
               />
               <Link to="/register">
                 Vous n'avez pas de compte? en créer un maintenant.

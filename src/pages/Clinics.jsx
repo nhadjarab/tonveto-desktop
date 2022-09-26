@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { frFR } from "@mui/x-data-grid/locales";
 import { CustomToolbar } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import { Typography, Alert } from "@mui/material";
+import {
+  Typography,
+  Alert,
+  CircularProgress,
+  Box,
+  Grid,
+  Paper,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -24,11 +31,24 @@ const Clinics = () => {
   const { user } = useAuth();
   const { apiUrl } = useEnv();
   const navigate = useNavigate();
+  const numberOfClinics = useMemo(() => {
+    return rows.length;
+  }, [rows.length]);
+
+  const approvedClinicsPercentage = useMemo(() => {
+    if (rows.length == 0) return "0%";
+    return (
+      Math.round(
+        (rows.filter((row) => row.is_approved).length * 100) / rows.length
+      ) + "%"
+    );
+  }, [rows.length]);
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchUsers = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${apiUrl}/getAllClinics`, {
           method: "GET",
@@ -41,6 +61,7 @@ const Clinics = () => {
         });
 
         const data = await res.json();
+        setLoading(false);
         if (res.status === 200) {
           setRows(data);
         } else {
@@ -52,16 +73,50 @@ const Clinics = () => {
         setError("Something went wrong, please try again");
       }
     };
-    setLoading(true);
+
     fetchUsers();
-    setLoading(false);
+
     return () => controller.abort();
   }, []);
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
+      <Grid container spacing={3} sx={{ marginBottom: 8 }}>
+        <Grid xs={6} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {numberOfClinics}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Nombre De Cliniques
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid xs={6} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {approvedClinicsPercentage}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Taux De Clinique Approuvée
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Liste Des Clinics
+        # Liste Des Cliniques
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <div style={{ height: 450, width: "100%" }}>

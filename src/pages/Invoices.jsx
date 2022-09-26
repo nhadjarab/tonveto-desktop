@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { frFR } from "@mui/x-data-grid/locales";
 import { CustomToolbar } from "../components";
-import { Typography, Alert, Link } from "@mui/material";
+import { Typography, Alert, Link, CircularProgress, Box } from "@mui/material";
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -11,7 +11,9 @@ const Invoices = () => {
 
   useEffect(() => {
     const fetchInvoices = async () => {
+      setLoading(true);
       const response = await window.server.getInvoices();
+      setLoading(false);
       setInvoices(response);
     };
     fetchInvoices();
@@ -28,16 +30,31 @@ const Invoices = () => {
       field: "PDF",
       flex: 1,
       renderCell: (cellValues) => (
-        <Link href={cellValues.row.pdf} download>Télécharger</Link>
+        <Link href={cellValues.row.pdf} download>
+          Télécharger
+        </Link>
       ),
     },
   ];
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Liste Des Factures
+        # Liste Des Factures
       </Typography>
+      {error && <Alert severity="error">{error}</Alert>}
       <div style={{ height: 450, width: "100%" }}>
         <DataGrid
           rows={invoices}

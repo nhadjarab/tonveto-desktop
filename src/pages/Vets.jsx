@@ -1,11 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { frFR } from "@mui/x-data-grid/locales";
 import { CustomToolbar } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import { Typography, Alert } from "@mui/material";
+import {
+  Typography,
+  Alert,
+  CircularProgress,
+  Box,
+  Grid,
+  Paper,
+} from "@mui/material";
 
 const columns = [
   { field: "first_name", headerName: "Prénom", flex: 1 },
@@ -28,10 +35,33 @@ const Vets = () => {
   const { apiUrl } = useEnv();
   const navigate = useNavigate();
 
+  const numberOfVets = useMemo(() => {
+    return rows.length;
+  }, [rows.length]);
+
+  const completProfilePercentage = useMemo(() => {
+    if (rows.length == 0) return "0%";
+    return (
+      Math.round(
+        (rows.filter((row) => !row.profile_complete).length * 100) / rows.length
+      ) + "%"
+    );
+  }, [rows.length]);
+
+  const approvedProfilePercentage = useMemo(() => {
+    if (rows.length == 0) return "0%";
+    return (
+      Math.round(
+        (rows.filter((row) => row.is_approved).length * 100) / rows.length
+      ) + "%"
+    );
+  }, [rows.length]);
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchUsers = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${apiUrl}/getAllVets`, {
           method: "GET",
@@ -44,6 +74,7 @@ const Vets = () => {
         });
 
         const data = await res.json();
+        setLoading(false);
         if (res.status === 200) {
           setRows(data);
         } else {
@@ -55,21 +86,65 @@ const Vets = () => {
         setError("Something went wrong, please try again");
       }
     };
-    setLoading(true);
     fetchUsers();
-    setLoading(false);
     return () => controller.abort();
   }, []);
 
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   return (
     <div>
+      <Grid container spacing={3} sx={{ marginBottom: 8 }}>
+        <Grid xs={4} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {numberOfVets}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Nombre De Vétérinaire
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid xs={4} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {completProfilePercentage}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Taux De Profile Incomplet
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid xs={4} item>
+          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
+            <Typography variant="h2" fontWeight="bold">
+              {approvedProfilePercentage}
+            </Typography>
+            <Typography variant="h5" fontWeight="semi-bold">
+              Taux De Profile Approuvé
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Liste Des Vets
+        # Liste Des Vétérinaires
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <div style={{ height: 450, width: "100%" }}>
         <DataGrid
-         onRowClick={(params, event, details) => {
+          onRowClick={(params, event, details) => {
             console.log(params.id);
             navigate(`/vets/${params.id}`);
           }}
