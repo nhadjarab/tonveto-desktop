@@ -18,7 +18,7 @@ const createWindow = () => {
     show: false,
     minWidth: 800,
     minHeight: 600,
-    icon: path.join(__dirname, "favicon.png"),
+    icon: path.join(__dirname, "favicon.ico"),
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
@@ -27,22 +27,6 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-
-  // const splash = new BrowserWindow({
-  //   width: 500,
-  //   height: 300,
-  //   transparent: true,
-  //   frame: false,
-  //   alwaysOnTop: true,
-  // });
-  // splash.loadFile(path.join(__dirname, "splash.html"));
-  // splash.center();
-
-  // setTimeout(function () {
-  //   splash.close();
-  //   win.show();
-  //   win.maximize();
-  // }, 10000);
 
   win.show();
   win.maximize();

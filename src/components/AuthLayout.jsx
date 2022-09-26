@@ -25,7 +25,7 @@ import { useAuth } from "../context/AuthProvider";
 
 import Logout from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
-import AppLogo from "../assets/favicon.ico";
+import AppLogo from "../assets/favicon.png";
 
 const drawerWidth = 240;
 

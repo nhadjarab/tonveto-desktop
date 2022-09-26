@@ -35,6 +35,9 @@
   },
   "build": {
     "extends": null,
+    "win": {
+      "icon": "build/favicon.ico"
+    },
     "appId": "com.example.electron-cra",
     "files": [
       "dist/**/*",

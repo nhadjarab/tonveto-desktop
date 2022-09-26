@@ -11,5 +11,5 @@ Loads the react on the electron app
 
 ## Production setup
 
-### `npm run electron-builder`
+### `npm run electron-build`
 Package the application to production
