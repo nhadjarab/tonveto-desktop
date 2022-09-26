@@ -28,7 +28,7 @@ const createWindow = () => {
   win.show();
 
   if (isDev) win.webContents.openDevTools();
-  else mainWindow.setMenuBarVisibility(false);
+  else win.setMenuBarVisibility(false);
 
   const url = isDev
     ? "http://localhost:3000"
