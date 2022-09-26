@@ -1,24 +1,32 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
+const { config } = require("dotenv");
+const stripeSdk = require("stripe");
+config();
+
+const stripe = stripeSdk(process.env.STRIPE_KEY);
 
 app.disableHardwareAcceleration();
 let win = null;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    minWidth:800,
-    minHeight : 600,
-    icon : __dirname + "/favicon.ico" ,
+    show: false,
+    minWidth: 800,
+    minHeight: 600,
+    icon: __dirname + "/favicon.ico",
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
-      devTools: !app.isPackaged
+      devTools: !app.isPackaged,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
+  win.maximize();
+  win.show();
+  win.webContents.openDevTools();
 
   const url = isDev
     ? "http://localhost:3000"
@@ -28,6 +36,55 @@ const createWindow = () => {
   win.on("closed", () => {
     win = null;
   });
+
+  ipcMain.handle("getInvoices", async () => {
+    const invoices = await stripe.invoices.list();
+    return invoices.data.map((invoice) => ({
+      id: invoice.id,
+      name: invoice.customer_name,
+      email: invoice.customer_email,
+      phone: invoice.customer_phone,
+      price: parseInt(invoice.amount_paid) / 100 + "€",
+      pdf: invoice.invoice_pdf,
+      description: invoice.lines.data[0].description,
+      startDate: new Date(
+        parseInt(invoice.lines.data[0].period.start) * 1000
+      ).toDateString(),
+      endDate: new Date(
+        parseInt(invoice.lines.data[0].period.end) * 1000
+      ).toDateString(),
+    }));
+  });
+
+  // ipcMain.handle("getStripeSubscriptions", async () => {
+  //   const subscriptions = await stripe.subscriptions.list();
+  //   const populatedSubscriptions = await Promise.all(
+  //     subscriptions.data.map(async (subscription) => {
+  //       const customer = await stripe.customers.retrieve(subscription.customer);
+  //       let product;
+  //       if (subscription.items?.data?.plan?.product)
+  //         product = await stripe.products.retrieve(
+  //           subscription.items?.data?.plan?.product
+  //         );
+  //       return {
+  //         currency: subscription.currency,
+  //         status: subscription.status,
+  //         price: subscription.items?.data?.plan?.amount
+  //           ? parseInt(subscription.items?.data?.plan?.amount)
+  //           : 0,
+  //         end_date: new Date(parseInt(subscription.current_period_end) * 1000),
+  // start_date: new Date(
+  //   parseInt(subscription.current_period_start) * 1000
+  // ),
+  //         customer: { name: customer.name, email: customer.email },
+  //         productName: product?.name,
+  //         productDescription: product?.description,
+  //       };
+  //     })
+  //   );
+  //   console.log(populatedSubscriptions);
+  //   return populatedSubscriptions;
+  // });
 };
 
 app.on("ready", createWindow);

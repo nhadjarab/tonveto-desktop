@@ -236,6 +236,14 @@ const AuthLayout = () => {
                   <ListItemText primary="Comment Reports" />
                 </ListItemButton>
               </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to="/invoices">
+                  <ListItemIcon sx={{ color: "#fff" }}>
+                    <GroupIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Invoices" />
+                </ListItemButton>
+              </ListItem>
             </List>
             <Divider sx={{ backgroundColor: "#fff" }} />
             <List>
