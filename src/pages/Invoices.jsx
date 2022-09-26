@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { frFR } from "@mui/x-data-grid/locales";
-import { CustomToolbar } from "../components";
-import { Typography, Alert, Link, CircularProgress, Box } from "@mui/material";
+import { Loading, Table } from "../components";
+import { Typography, Link } from "@mui/material";
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -36,38 +34,15 @@ const Invoices = () => {
       ),
     },
   ];
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Factures
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
-          rows={invoices}
-          columns={columns}
-          loading={loading}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-        />
-      </div>
+      <Table columns={columns} rows={invoices} error={error} />
     </div>
   );
 };

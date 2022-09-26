@@ -1,30 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { frFR } from "@mui/x-data-grid/locales";
-import { CustomToolbar } from "../components";
+import { Loading, KPICard, Table } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import {
-  Typography,
-  Alert,
-  CircularProgress,
-  Box,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 
 const columns = [
   { field: "user_name", headerName: "User", flex: 1 },
   { field: "user_email", headerName: "User Email", flex: 1 },
   { field: "pet_name", headerName: "Pet Name", flex: 1 },
   { field: "breed", headerName: "Race", flex: 1 },
-  { field: "sex", headerName: "Sexe", flex: 1 },
+  { field: "date", headerName: "Date", flex: 1 },
   { field: "vet_name", headerName: "Vet", flex: 1 },
   { field: "vet_email", headerName: "Vet Email", flex: 1 },
-  // { field: "balance", headerName: "Balance", flex: 1 },
-  // { field: "type", headerName: "Type", flex: 1 },
-  // { field: "is_approved", headerName: "Approuvé", flex: 1 },
-  // { field: "profile_complete", headerName: "Profile Complet", flex: 1 },
 ];
 
 const Appointements = () => {
@@ -33,8 +20,22 @@ const Appointements = () => {
   const [error, setError] = useState("");
   const { user } = useAuth();
   const { apiUrl } = useEnv();
+
   const numberOfAppointments = useMemo(() => {
     return rows.length;
+  }, [rows.length]);
+
+  const numberOfAppointmentsThisMonth = useMemo(() => {
+    return rows.reduce((nb, row) => {
+      const thisMonth = new Date().getMonth() + 1;
+      const thisYear = new Date().getFullYear();
+      const appointmentMonth = row.date.substring(5, 7);
+      const appointmentYear = row.date.substring(0, 4);
+
+      return appointmentMonth == thisMonth && thisYear == appointmentYear
+        ? nb + 1
+        : nb;
+    }, 0);
   }, [rows.length]);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const Appointements = () => {
         });
 
         const data = await res.json();
+        console.log(data);
         if (res.status === 200) {
           const appointements = data.map((appointement) => ({
             id: appointement.id,
@@ -62,7 +64,7 @@ const Appointements = () => {
             user_email: appointement.user.email,
             pet_name: appointement.pet.name,
             breed: appointement.pet.breed,
-            sex: appointement.pet.sex,
+            date: appointement.date + " à " + appointement.time,
             vet_name:
               appointement.vet.first_name + " " + appointement.vet.last_name,
             vet_email: appointement.vet.email,
@@ -83,50 +85,26 @@ const Appointements = () => {
 
     return () => controller.abort();
   }, []);
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={6} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {numberOfAppointments}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Nombre De Rendez-Vous
-            </Typography>
-          </Paper>
+          <KPICard title="Nombre De Rendez-Vous" value={numberOfAppointments} />
+        </Grid>
+        <Grid xs={6} item>
+          <KPICard
+            title="Nombre De Rendez-Vous Ce Mois"
+            value={numberOfAppointmentsThisMonth}
+          />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Rendez-vous
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          loading={loading}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-        />
-      </div>
+      <Table columns={columns} rows={rows} error={error} />
     </div>
   );
 };

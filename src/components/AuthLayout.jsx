@@ -25,6 +25,7 @@ import { useAuth } from "../context/AuthProvider";
 
 import Logout from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
+import AppLogo from "../assets/favicon.ico";
 
 const drawerWidth = 240;
 
@@ -159,7 +160,7 @@ const AuthLayout = () => {
                 height: 70,
                 margin: "30px auto 5px",
               }}
-              src="/favicon.ico"
+              src={AppLogo}
             />
           </Toolbar>
 

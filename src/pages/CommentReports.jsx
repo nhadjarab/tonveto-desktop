@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
+import { Loading } from "../components";
 import {
   Typography,
   Alert,
@@ -12,7 +13,6 @@ import {
   Button,
   Stack,
   LinearProgress,
-  CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -69,6 +69,8 @@ const CommentReports = () => {
     const commentReportId = row.id;
     const commentId = row.comment_id;
     const commentType = row.report_type;
+    console.log(commentId);
+    console.log(commentType);
     setLoadingHandleAction(true);
     try {
       const res = await fetch(
@@ -137,19 +139,9 @@ const CommentReports = () => {
 
     return () => controller.abort();
   }, []);
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>

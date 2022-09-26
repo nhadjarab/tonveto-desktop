@@ -1,17 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { frFR } from "@mui/x-data-grid/locales";
-import { CustomToolbar } from "../components";
+import { Loading, KPICard, Table } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import {
-  Typography,
-  Alert,
-  CircularProgress,
-  Box,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -31,6 +22,7 @@ const Clinics = () => {
   const { user } = useAuth();
   const { apiUrl } = useEnv();
   const navigate = useNavigate();
+  
   const numberOfClinics = useMemo(() => {
     return rows.length;
   }, [rows.length]);
@@ -78,64 +70,34 @@ const Clinics = () => {
 
     return () => controller.abort();
   }, []);
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={6} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {numberOfClinics}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Nombre De Cliniques
-            </Typography>
-          </Paper>
+          <KPICard title="Nombre De Cliniques" value={numberOfClinics} />
         </Grid>
         <Grid xs={6} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {approvedClinicsPercentage}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Taux De Clinique Approuvée
-            </Typography>
-          </Paper>
+          <KPICard
+            title="Taux De Clinique Approuvée"
+            value={approvedClinicsPercentage}
+          />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Cliniques
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
-          onRowClick={(params, event, details) => {
-            console.log(params.id);
-            navigate(`/clinics/${params.id}`);
-          }}
-          rows={rows}
-          columns={columns}
-          loading={loading}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-        />
-      </div>
+      <Table
+        columns={columns}
+        rows={rows}
+        error={error}
+        onRowClick={(params, event, details) => {
+          console.log(params.id);
+          navigate(`/clinics/${params.id}`);
+        }}
+      />
     </div>
   );
 };

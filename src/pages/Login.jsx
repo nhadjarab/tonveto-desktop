@@ -31,6 +31,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setUserError("");
     setLaoding(true);
     try {
       const loginResponse = await fetch(`${apiUrl}/loginAdmin`, {

@@ -1,19 +1,8 @@
 import { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { frFR } from "@mui/x-data-grid/locales";
-import { CustomToolbar } from "../components";
+import { Loading, Table } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import {
-  Typography,
-  Alert,
-  Button,
-  LinearProgress,
-  CircularProgress,
-  Box,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Typography, Button, LinearProgress } from "@mui/material";
 
 const PendingVet = () => {
   const [rows, setRows] = useState([]);
@@ -115,39 +104,16 @@ const PendingVet = () => {
       },
     },
   ];
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Vétérinaires En Attente
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <div style={{ height: 450, width: "100%" }}>
-        {loading && <LinearProgress />}
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          loading={loading}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-        />
-      </div>
+      {loading && <LinearProgress />}
+      <Table columns={columns} rows={rows} error={error} />
     </div>
   );
 };

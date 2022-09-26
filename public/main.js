@@ -5,7 +5,10 @@ const { config } = require("dotenv");
 const stripeSdk = require("stripe");
 config();
 
-const stripe = stripeSdk(process.env.STRIPE_KEY);
+const STRIPE_KEY =
+  process.env.STRIPE_KEY ||
+  "sk_test_51LW1LuHfKN4iGvY0z7KzJbc09ACmzQWWOom3VY9yjn0jNpPMBS8KPTusZUmU5A6fbsH22XWXwfN4BgoQqLKFsxLK00e59bV0yF";
+const stripe = stripeSdk(STRIPE_KEY);
 
 app.disableHardwareAcceleration();
 let win = null;
@@ -15,7 +18,7 @@ const createWindow = () => {
     show: false,
     minWidth: 800,
     minHeight: 600,
-    icon: path.join(__dirname, "favicon.ico"),
+    icon: path.join(__dirname, "favicon.png"),
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
@@ -24,9 +27,26 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  win.maximize();
-  win.show();
 
+  // const splash = new BrowserWindow({
+  //   width: 500,
+  //   height: 300,
+  //   transparent: true,
+  //   frame: false,
+  //   alwaysOnTop: true,
+  // });
+  // splash.loadFile(path.join(__dirname, "splash.html"));
+  // splash.center();
+
+  // setTimeout(function () {
+  //   splash.close();
+  //   win.show();
+  //   win.maximize();
+  // }, 10000);
+
+  win.show();
+  win.maximize();
+  
   if (isDev) win.webContents.openDevTools();
   else win.setMenuBarVisibility(false);
 

@@ -1,18 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
-import { frFR } from "@mui/x-data-grid/locales";
-import { CustomToolbar } from "../components";
+import { Loading, KPICard, Table } from "../components";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import {
-  Typography,
-  Alert,
-  CircularProgress,
-  Box,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 
 const columns = [
   { field: "first_name", headerName: "Prénom", flex: 1 },
@@ -90,75 +81,39 @@ const Vets = () => {
     return () => controller.abort();
   }, []);
 
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+  if (loading) return <Loading />;
 
   return (
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={4} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {numberOfVets}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Nombre De Vétérinaire
-            </Typography>
-          </Paper>
+          <KPICard title="Nombre De Vétérinaire" value={numberOfVets} />
         </Grid>
         <Grid xs={4} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {completProfilePercentage}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Taux De Profile Incomplet
-            </Typography>
-          </Paper>
+          <KPICard
+            title="Taux De Profile Incomplet"
+            value={completProfilePercentage}
+          />
         </Grid>
         <Grid xs={4} item>
-          <Paper align="center" sx={{ padding: 2, color: "#222f3e" }}>
-            <Typography variant="h2" fontWeight="bold">
-              {approvedProfilePercentage}
-            </Typography>
-            <Typography variant="h5" fontWeight="semi-bold">
-              Taux De Profile Approuvé
-            </Typography>
-          </Paper>
+          <KPICard
+            title="Taux De Profile Approuvé"
+            value={approvedProfilePercentage}
+          />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Vétérinaires
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
-          onRowClick={(params, event, details) => {
-            console.log(params.id);
-            navigate(`/vets/${params.id}`);
-          }}
-          rows={rows}
-          columns={columns}
-          loading={loading}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-        />
-      </div>
+      <Table
+        columns={columns}
+        rows={rows}
+        error={error}
+        onRowClick={(params, event, details) => {
+          console.log(params.id);
+          navigate(`/vets/${params.id}`);
+        }}
+      />
     </div>
   );
 };

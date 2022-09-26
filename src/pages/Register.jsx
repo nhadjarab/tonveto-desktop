@@ -52,6 +52,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setNewUserError("");
     try {
       setLoadingNext(true);
       const res = await fetch(`${apiUrl}/registerAdmin`, {
@@ -62,7 +63,7 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
       const data = await res.json();
-      setLoadingNext(false);
+
       if (res.status === 200) {
         setActiveStep(1);
       } else {
@@ -72,10 +73,12 @@ const Register = () => {
       console.error(err);
       setNewUserError("Something went wrong, please try again");
     }
+    setLoadingNext(false);
   };
 
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
+    setUpdateUserError("");
     try {
       setLoadingUpdate(true);
       const loginResponse = await fetch(`${apiUrl}/loginAdmin`, {
@@ -94,15 +97,15 @@ const Register = () => {
       const userId = loginData.adminProfile.id;
       const email = loginData.adminProfile.email;
       const username =
-        loginData.adminProfile.first_name || loginData.adminProfile.last_name
-          ? loginData.adminProfile.first_name?.toUpperCase() +
+        updateUser.first_name || updateUser.last_name
+          ? updateUser.first_name?.toUpperCase() +
             " " +
-            loginData.adminProfile.last_name?.toUpperCase()
+            updateUser.last_name?.toUpperCase()
           : "ADMIN";
 
       console.log(loginData);
       console.log(updateUser);
-      const res = await fetch(`${apiUrl}/user/${userId}`, {
+      const res = await fetch(`${apiUrl}/admin/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -111,9 +114,9 @@ const Register = () => {
         body: JSON.stringify(updateUser),
       });
       const data = await res.json();
-      setLoadingUpdate(false);
+
       if (res.status === 200) {
-        loginUser({ token, userId,email, username }, () =>
+        loginUser({ token, userId, email, username }, () =>
           navigate("/home", { replace: true })
         );
       } else {
@@ -123,6 +126,7 @@ const Register = () => {
       console.error(err);
       setUpdateUserError("Something went wrong, please try again");
     }
+    setLoadingUpdate(false);
   };
   return (
     <>
