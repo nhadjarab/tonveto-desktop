@@ -15,18 +15,20 @@ const createWindow = () => {
     show: false,
     minWidth: 800,
     minHeight: 600,
-    icon: __dirname + "/favicon.ico",
+    icon: path.join(__dirname, "favicon.ico"),
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
-      devTools: !app.isPackaged,
+      devTools: isDev,
       preload: path.join(__dirname, "preload.js"),
     },
   });
   win.maximize();
   win.show();
-  win.webContents.openDevTools();
+
+  if (isDev) win.webContents.openDevTools();
+  else mainWindow.setMenuBarVisibility(false);
 
   const url = isDev
     ? "http://localhost:3000"
