@@ -1,7 +1,7 @@
 import { Typography, Box } from "@mui/material";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
-const Empty = ({ msg }) => {
+const Empty = ({ msg,mt }) => {
   return (
     <Box
       sx={{
@@ -9,7 +9,7 @@ const Empty = ({ msg }) => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        marginTop:2
+        marginTop: mt || 2
       }}
     >
       <HourglassEmptyIcon sx={{ fontSize: 100 }} />

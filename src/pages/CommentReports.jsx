@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { useEnv } from "../hooks/EnvHook";
-import { Loading } from "../components";
+import { Loading, Empty } from "../components";
 import {
   Typography,
   Alert,
@@ -31,8 +31,8 @@ const CommentReports = () => {
 
   const handleApproveCommentReport = async (row) => {
     const commentReportId = row.id;
-    const commentId = row.comment_id;
-    const commentType = row.report_type;
+    const comment_id = row.comment_id;
+    const comment_type = row.report_type;
     setLoadingHandleAction(true);
     try {
       const res = await fetch(
@@ -43,8 +43,8 @@ const CommentReports = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
             logged_in_id: user.userId,
-            commentType,
-            commentId,
+            comment_id,
+            comment_type,
           },
         }
       );
@@ -67,10 +67,8 @@ const CommentReports = () => {
   };
   const handleRejectCommentReport = async (row) => {
     const commentReportId = row.id;
-    const commentId = row.comment_id;
-    const commentType = row.report_type;
-    console.log(commentId);
-    console.log(commentType);
+    const comment_id = row.comment_id;
+    const comment_type = row.report_type;
     setLoadingHandleAction(true);
     try {
       const res = await fetch(
@@ -81,8 +79,8 @@ const CommentReports = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
             logged_in_id: user.userId,
-            commentType,
-            commentId,
+            comment_id,
+            comment_type,
           },
         }
       );
@@ -144,12 +142,17 @@ const CommentReports = () => {
 
   return (
     <div>
-      <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Rapports Des Commentaires
-      </Typography>
+      {rows.length > 0 && (
+        <Typography variant="h4" sx={{ mb: 4 }}>
+          # Liste Des Rapports Des Commentaires
+        </Typography>
+      )}
       {error && <Alert severity="error">{error}</Alert>}
       {loadingHandleAction && <LinearProgress />}
       <div>
+        {rows.length === 0 && (
+          <Empty msg="Aucun rapport de commentaire à afficher" mt={10}/>
+        )}
         {rows.map((row) => (
           <Accordion
             key={row.id}

@@ -3,11 +3,12 @@ const isDev = require("electron-is-dev");
 const path = require("path");
 const { config } = require("dotenv");
 const stripeSdk = require("stripe");
+const electronDl = require("electron-dl");
+
+electronDl();
 config();
 
-const STRIPE_KEY =
-  process.env.STRIPE_KEY ||
-  "sk_test_51LW1LuHfKN4iGvY0z7KzJbc09ACmzQWWOom3VY9yjn0jNpPMBS8KPTusZUmU5A6fbsH22XWXwfN4BgoQqLKFsxLK00e59bV0yF";
+const STRIPE_KEY = process.env.STRIPE_KEY;
 const stripe = stripeSdk(STRIPE_KEY);
 
 app.disableHardwareAcceleration();
@@ -28,9 +29,9 @@ const createWindow = () => {
     },
   });
 
-  win.show();
   win.maximize();
-  
+  win.show();
+
   if (isDev) win.webContents.openDevTools();
   else win.setMenuBarVisibility(false);
 
@@ -43,6 +44,15 @@ const createWindow = () => {
     win = null;
   });
 
+  const formateDate = (date) => {
+    let month = date.getMonth() + 1;
+    if (month < 10) month = "0" + month;
+    let dateOfMonth = date.getDate();
+    if (dateOfMonth < 10) dateOfMonth = "0" + dateOfMonth;
+    const year = date.getFullYear();
+    return dateOfMonth + "/" + month + "/" + year;
+  };
+
   ipcMain.handle("getInvoices", async () => {
     const invoices = await stripe.invoices.list();
     return invoices.data.map((invoice) => ({
@@ -53,12 +63,12 @@ const createWindow = () => {
       price: parseInt(invoice.amount_paid) / 100 + "€",
       pdf: invoice.invoice_pdf,
       description: invoice.lines.data[0].description,
-      startDate: new Date(
-        parseInt(invoice.lines.data[0].period.start) * 1000
-      ).toDateString(),
-      endDate: new Date(
-        parseInt(invoice.lines.data[0].period.end) * 1000
-      ).toDateString(),
+      startDate: formateDate(
+        new Date(parseInt(invoice.lines.data[0].period.start) * 1000)
+      ),
+      endDate: formateDate(
+        new Date(parseInt(invoice.lines.data[0].period.end) * 1000)
+      ),
     }));
   });
 

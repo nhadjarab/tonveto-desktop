@@ -25,6 +25,12 @@ import { useAuth } from "../context/AuthProvider";
 
 import Logout from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
+import MedicationIcon from '@mui/icons-material/Medication';
+import GiteIcon from '@mui/icons-material/Gite';
+import EventIcon from '@mui/icons-material/Event';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import DescriptionIcon from '@mui/icons-material/Description';
 import AppLogo from "../assets/favicon.png";
 
 const drawerWidth = 240;
@@ -149,7 +155,7 @@ const AuthLayout = () => {
               width: drawerWidth,
               boxSizing: "border-box",
               backgroundColor: "#222f3e",
-              color: "#fff",
+              color: "#ddd",
             },
           }}
         >
@@ -174,7 +180,7 @@ const AuthLayout = () => {
               </ListSubheader>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/home">
-                  <ListItemIcon sx={{ color: "#fff" }}>
+                  <ListItemIcon sx={{ color: "#aaa" }}>
                     <GroupIcon />
                   </ListItemIcon>
                   <ListItemText primary="Utilisateurs" />
@@ -182,30 +188,30 @@ const AuthLayout = () => {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/vets">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <MedicationIcon />
                   </ListItemIcon>
                   <ListItemText primary="vétérinaires" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/clinics">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <GiteIcon />
                   </ListItemIcon>
                   <ListItemText primary="Cliniques" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/appointements">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <EventIcon />
                   </ListItemIcon>
                   <ListItemText primary="Rendez-vous" />
                 </ListItemButton>
               </ListItem>
             </List>
-            <Divider sx={{ backgroundColor: "#fff" }} />
+            <Divider sx={{ backgroundColor: "#aaa" }} />
             <List>
               <ListSubheader
                 inset
@@ -215,43 +221,43 @@ const AuthLayout = () => {
               </ListSubheader>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/pending/vets">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <HourglassBottomIcon />
                   </ListItemIcon>
                   <ListItemText primary="Vet en attente" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/pending/clinics">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <HourglassBottomIcon />
                   </ListItemIcon>
                   <ListItemText primary="Cliniques en attente" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/comment-reports">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <ChatBubbleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Commentaires" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton component={Link} to="/invoices">
-                  <ListItemIcon sx={{ color: "#fff" }}>
-                    <GroupIcon />
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <DescriptionIcon />
                   </ListItemIcon>
                   <ListItemText primary="Factures" />
                 </ListItemButton>
               </ListItem>
             </List>
-            <Divider sx={{ backgroundColor: "#fff" }} />
+            <Divider sx={{ backgroundColor: "#aaa" }} />
             <List>
               {" "}
               <ListItem disablePadding>
                 <ListItemButton component={Button} onClick={logout}>
-                  <ListItemIcon sx={{ color: "#fff" }}>
+                  <ListItemIcon sx={{ color: "#aaa" }}>
                     <Logout />
                   </ListItemIcon>
                   <ListItemText primary="Se Déconnecter" />
