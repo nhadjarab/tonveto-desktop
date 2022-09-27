@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Loading, Table } from "../components";
-import { Typography, Link } from "@mui/material";
+import { Typography, Link, Button, LinearProgress } from "@mui/material";
 
 const Subscriptions = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingCancel, setLoadingCancel] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -16,21 +17,48 @@ const Subscriptions = () => {
     };
     fetchSubscriptions();
   }, []);
+
+  const handleCancel = async (_event, cellValues) => {
+    const subscriptionId = cellValues.row.id;
+    setLoadingCancel(true);
+    const response = await window.server.CancelSubscription(subscriptionId);
+    console.log(response);
+    setSubscriptions((prev) =>
+      prev.map((subscription) => {
+        if (subscription.id !== subscriptionId) return subscription;
+        return { ...subscription, status: "canceled" };
+      })
+    );
+    setLoadingCancel(false);
+  };
+
   const columns = [
-    { field: "name", headerName: "Nom", flex: 1 },
-    { field: "email", headerName: "Email", flex: 2 },
-    { field: "price", headerName: "Prix", flex: 1 },
-    { field: "description", headerName: "Description", flex: 3 },
-    { field: "startDate", headerName: "Début", flex: 1 },
-    { field: "endDate", headerName: "Fin", flex: 1 },
+    { field: "customer", headerName: "Client", flex: 2 },
+    { field: "status", headerName: "Etat", flex: 1 },
+    { field: "billing", headerName: "Facturation", flex: 1 },
+    { field: "product", headerName: "Produit", flex: 1 },
+    { field: "created", headerName: "Début", flex: 1 },
     {
-      field: "Facture",
+      field: "Actions",
       flex: 1,
-      renderCell: (cellValues) => (
-        <Link href={cellValues.row.pdf} download>
-          Télécharger
-        </Link>
-      ),
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            {cellValues.row.status !== "canceled" && (
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{ mr: "5px" }}
+                onClick={(event) => {
+                  handleCancel(event, cellValues);
+                }}
+              >
+                Annuler
+              </Button>
+            )}
+          </div>
+        );
+      },
     },
   ];
 
@@ -41,6 +69,7 @@ const Subscriptions = () => {
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Abonnements
       </Typography>
+      {loadingCancel && <LinearProgress />}
       <Table columns={columns} rows={subscriptions} error={error} />
     </div>
   );

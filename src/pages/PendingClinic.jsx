@@ -7,6 +7,7 @@ import { Typography, Button, LinearProgress } from "@mui/material";
 const PendingClinic = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingApprouve, setLoadingApprove] = useState(false);
   const [error, setError] = useState("");
   const { user } = useAuth();
   const { apiUrl } = useEnv();
@@ -49,7 +50,7 @@ const PendingClinic = () => {
 
   const handleApprove = async (event, cellValues) => {
     const clinicId = cellValues.row.id;
-    setLoading(true);
+    setLoadingApprove(true);
     try {
       const res = await fetch(`${apiUrl}/approveClinic/${clinicId}`, {
         method: "PUT",
@@ -72,7 +73,7 @@ const PendingClinic = () => {
       if (err.name === "AbortError") return;
       setError("Something went wrong, please try again");
     }
-    setLoading(false);
+    setLoadingApprove(false);
   };
 
   const columns = [
@@ -111,7 +112,7 @@ const PendingClinic = () => {
       <Typography variant="h4" sx={{ mb: 4 }}>
         # Liste Des Cliniques En Attente
       </Typography>
-      {loading && <LinearProgress />}
+      {loadingApprouve && <LinearProgress />}
       <Table columns={columns} rows={rows} error={error} />
     </div>
   );

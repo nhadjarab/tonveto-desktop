@@ -1,11 +1,12 @@
-import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import { GridToolbarContainer, GridToolbarExport,GridToolbar } from "@mui/x-data-grid";
 
 const CustomToolbar = () => {
   return (
     <div>
-      <GridToolbarContainer>
+      {/* <GridToolbarContainer>
         <GridToolbarExport variant="standard" sx={{ ml: "auto" }} />
-      </GridToolbarContainer>
+      </GridToolbarContainer> */}
+      <GridToolbar/>
     </div>
   );
 };

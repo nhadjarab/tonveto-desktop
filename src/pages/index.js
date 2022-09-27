@@ -11,3 +11,4 @@ export { default as Vets } from "./Vets";
 export { default as SingleVet } from "./SingleVet";
 export { default as PendingVet } from "./PendingVet";
 export { default as Subscriptions } from "./Subscriptions";
+export { default as Invoices } from "./Invoices";

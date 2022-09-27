@@ -11,7 +11,7 @@ electronDl({
 
 config();
 
-const STRIPE_KEY = process.env.STRIPE_KEY;
+const STRIPE_KEY = process.env.STRIPE_KEY ;
 const stripe = stripeSdk(STRIPE_KEY);
 
 app.disableHardwareAcceleration();
@@ -56,13 +56,10 @@ const createWindow = () => {
     return dateOfMonth + "/" + month + "/" + year;
   };
 
-  ipcMain.handle("getSubscriptions", async () => {
-    const invoices = await stripe.invoices.list({
-      status: "paid",
-    });
+  ipcMain.handle("getInvoices", async () => {
+    const invoices = await stripe.invoices.list();
     return invoices.data.map((invoice) => ({
       id: invoice.id,
-      name: invoice.customer_name,
       email: invoice.customer_email,
       price: parseInt(invoice.amount_paid) / 100 + "€",
       pdf: invoice.invoice_pdf,
@@ -76,35 +73,40 @@ const createWindow = () => {
     }));
   });
 
-  // ipcMain.handle("getStripeSubscriptions", async () => {
-  //   const subscriptions = await stripe.subscriptions.list();
-  //   const populatedSubscriptions = await Promise.all(
-  //     subscriptions.data.map(async (subscription) => {
-  //       const customer = await stripe.customers.retrieve(subscription.customer);
-  //       let product;
-  //       if (subscription.items?.data?.plan?.product)
-  //         product = await stripe.products.retrieve(
-  //           subscription.items?.data?.plan?.product
-  //         );
-  //       return {
-  //         currency: subscription.currency,
-  //         status: subscription.status,
-  //         price: subscription.items?.data?.plan?.amount
-  //           ? parseInt(subscription.items?.data?.plan?.amount)
-  //           : 0,
-  //         end_date: new Date(parseInt(subscription.current_period_end) * 1000),
-  // start_date: new Date(
-  //   parseInt(subscription.current_period_start) * 1000
-  // ),
-  //         customer: { name: customer.name, email: customer.email },
-  //         productName: product?.name,
-  //         productDescription: product?.description,
-  //       };
-  //     })
-  //   );
-  //   console.log(populatedSubscriptions);
-  //   return populatedSubscriptions;
-  // });
+  ipcMain.handle("getSubscriptions", async () => {
+    const subscriptions = await stripe.subscriptions.list({
+      status: "all",
+    });
+    const populatedSubscriptions = await Promise.all(
+      subscriptions.data.map(async (subscription) => {
+        const customer = await stripe.customers.retrieve(subscription.customer);
+        let product;
+        if (subscription.items?.data[0]?.plan?.product)
+          try{
+            product = await stripe.products.retrieve(
+              subscription.items?.data[0]?.plan?.product
+            );
+          }catch(err){
+            console.error(err);
+          }
+        return {
+          id: subscription.id,
+          status: subscription.status,
+          created: formateDate(new Date(parseInt(subscription.created) * 1000)),
+          customer: customer.email,
+          product: product?.name,
+          billing: subscription.collection_method
+        };
+      })
+    );
+    console.log(subscriptions.data[0]);
+    return populatedSubscriptions;
+  });
+
+  ipcMain.handle("CancelSubscription", async (_event, subscription) => {
+    const deleted = await stripe.subscriptions.del(subscription);
+    console.log(deleted);
+  });
 };
 
 app.on("ready", createWindow);

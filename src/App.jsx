@@ -12,7 +12,8 @@ import {
   PendingVet,
   PendingClinic,
   CommentReports,
-  Subscriptions
+  Subscriptions,
+  Invoices
 } from "./pages";
 import { RequireAuth, RequireNotAuth, Layout, AuthLayout } from "./components";
 
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="/vets/:vetId" element={<SingleVet />} />
         <Route path="/pending/vets" element={<PendingVet />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
+        <Route path="/invoices" element={<Invoices />} />
         <Route path="/clinics" element={<Clinics />} />
         <Route path="/clinics/:clinicId" element={<SingleClinic />} />
         <Route path="/pending/clinics" element={<PendingClinic />} />
