@@ -5,7 +5,10 @@ const { config } = require("dotenv");
 const stripeSdk = require("stripe");
 const electronDl = require("electron-dl");
 
-electronDl();
+electronDl({
+  openFolderWhenDone: true,
+});
+
 config();
 
 const STRIPE_KEY = process.env.STRIPE_KEY;
@@ -53,13 +56,14 @@ const createWindow = () => {
     return dateOfMonth + "/" + month + "/" + year;
   };
 
-  ipcMain.handle("getInvoices", async () => {
-    const invoices = await stripe.invoices.list();
+  ipcMain.handle("getSubscriptions", async () => {
+    const invoices = await stripe.invoices.list({
+      status: "paid",
+    });
     return invoices.data.map((invoice) => ({
       id: invoice.id,
       name: invoice.customer_name,
       email: invoice.customer_email,
-      phone: invoice.customer_phone,
       price: parseInt(invoice.amount_paid) / 100 + "€",
       pdf: invoice.invoice_pdf,
       description: invoice.lines.data[0].description,

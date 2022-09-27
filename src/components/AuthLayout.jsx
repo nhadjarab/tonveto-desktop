@@ -191,7 +191,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#aaa" }}>
                     <MedicationIcon />
                   </ListItemIcon>
-                  <ListItemText primary="vétérinaires" />
+                  <ListItemText primary="Vétérinaires" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -244,11 +244,11 @@ const AuthLayout = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton component={Link} to="/invoices">
+                <ListItemButton component={Link} to="/subscriptions">
                   <ListItemIcon sx={{ color: "#aaa" }}>
                     <DescriptionIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Factures" />
+                  <ListItemText primary="Abonnement" />
                 </ListItemButton>
               </ListItem>
             </List>

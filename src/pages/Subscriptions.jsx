@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { Loading, Table } from "../components";
 import { Typography, Link } from "@mui/material";
 
-const Invoices = () => {
-  const [invoices, setInvoices] = useState([]);
+const Subscriptions = () => {
+  const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchInvoices = async () => {
+    const fetchSubscriptions = async () => {
       setLoading(true);
-      const response = await window.server.getInvoices();
+      const response = await window.server.getSubscriptions();
       setLoading(false);
-      setInvoices(response);
+      setSubscriptions(response);
     };
-    fetchInvoices();
+    fetchSubscriptions();
   }, []);
   const columns = [
     { field: "name", headerName: "Nom", flex: 1 },
@@ -24,7 +24,7 @@ const Invoices = () => {
     { field: "startDate", headerName: "Début", flex: 1 },
     { field: "endDate", headerName: "Fin", flex: 1 },
     {
-      field: "PDF",
+      field: "Facture",
       flex: 1,
       renderCell: (cellValues) => (
         <Link href={cellValues.row.pdf} download>
@@ -39,11 +39,11 @@ const Invoices = () => {
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Factures
+        # Liste Des Abonnements
       </Typography>
-      <Table columns={columns} rows={invoices} error={error} />
+      <Table columns={columns} rows={subscriptions} error={error} />
     </div>
   );
 };
 
-export default Invoices;
+export default Subscriptions;
