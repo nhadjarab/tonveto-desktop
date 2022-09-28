@@ -1,6 +1,6 @@
 {
   "name": "tonveto",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -36,6 +36,9 @@
   },
   "build": {
     "extends": null,
+    "mac": {
+      "icon": "build/favicon.icns"
+    },
     "win": {
       "icon": "build/favicon.ico"
     },
@@ -43,6 +46,7 @@
     "files": [
       "dist/**/*",
       "build/**/*",
+      "public/*",
       "node_modules/**/*",
       "package.json"
     ],

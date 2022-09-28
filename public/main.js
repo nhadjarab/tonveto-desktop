@@ -9,9 +9,11 @@ electronDl({
   openFolderWhenDone: true,
 });
 
-config();
+config({
+  path: path.join(__dirname, ".env"),
+});
 
-const STRIPE_KEY = process.env.STRIPE_KEY ;
+const STRIPE_KEY = process.env.STRIPE_KEY;
 const stripe = stripeSdk(STRIPE_KEY);
 
 app.disableHardwareAcceleration();
@@ -82,11 +84,11 @@ const createWindow = () => {
         const customer = await stripe.customers.retrieve(subscription.customer);
         let product;
         if (subscription.items?.data[0]?.plan?.product)
-          try{
+          try {
             product = await stripe.products.retrieve(
               subscription.items?.data[0]?.plan?.product
             );
-          }catch(err){
+          } catch (err) {
             console.error(err);
           }
         return {
@@ -95,7 +97,7 @@ const createWindow = () => {
           created: formateDate(new Date(parseInt(subscription.created) * 1000)),
           customer: customer.email,
           product: product?.name,
-          billing: subscription.collection_method
+          billing: subscription.collection_method,
         };
       })
     );
