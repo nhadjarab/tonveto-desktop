@@ -17,6 +17,8 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 const steps = ["Créer un compte", "Compléter ses information"];
+const NAME_REGEX = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+const PHONE_REGEX = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
 const Register = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -26,10 +28,13 @@ const Register = () => {
   });
   const [updateUser, setUpdateUser] = useState({
     first_name: "",
+    first_name_helper_text: "",
     last_name: "",
+    last_name_helper_text: "",
     email: "",
     birth_date: "2000-08-06",
     phone_number: "",
+    phone_number_helper_text: "",
   });
 
   const [newUserError, setNewUserError] = useState("");
@@ -48,6 +53,38 @@ const Register = () => {
     } else if (name === "password")
       setNewUser((prev) => ({ ...prev, [name]: value }));
     else setUpdateUser((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "first_name" && !new RegExp(NAME_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "Le prénom doit contenir au moins 3 charactères et pas de chiffres",
+      }));
+    if (name === "first_name" && new RegExp(NAME_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "",
+      }));
+    if (name === "last_name" && !new RegExp(NAME_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "Le nom doit contenir au moins 3 charactères et pas de chiffres",
+      }));
+    if (name === "last_name" && new RegExp(NAME_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "",
+      }));
+
+    if (name === "phone_number" && !new RegExp(PHONE_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "Le numéro du téléphone est invalid",
+      }));
+    if (name === "phone_number" && new RegExp(PHONE_REGEX).test(value))
+      setUpdateUser((prev) => ({
+        ...prev,
+        [name + "_helper_text"]: "",
+      }));
   };
 
   const handleRegister = async (e) => {
@@ -78,6 +115,12 @@ const Register = () => {
 
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
+    if (
+      updateUser.first_name_helper_text ||
+      updateUser.last_name_helper_text ||
+      updateUser.phone_number_helper_text
+    )
+      return;
     setUpdateUserError("");
     try {
       setLoadingUpdate(true);
@@ -215,9 +258,10 @@ const Register = () => {
                   label="Prénom"
                   variant="outlined"
                   name="first_name"
-                  inputProps={{ pattern: "[a-zA-Z]*" }}
                   type="text"
                   required
+                  error={Boolean(updateUser.first_name_helper_text)}
+                  helperText={updateUser.first_name_helper_text}
                   onChange={handleInputChange}
                 />
                 <TextField
@@ -225,9 +269,10 @@ const Register = () => {
                   label="Nom"
                   variant="outlined"
                   name="last_name"
-                  inputProps={{ pattern: "[a-zA-Z]*" }}
                   type="text"
                   required
+                  error={Boolean(updateUser.last_name_helper_text)}
+                  helperText={updateUser.last_name_helper_text}
                   onChange={handleInputChange}
                 />
                 <TextField
@@ -237,6 +282,8 @@ const Register = () => {
                   name="phone_number"
                   type="tel"
                   required
+                  error={Boolean(updateUser.phone_number_helper_text)}
+                  helperText={updateUser.phone_number_helper_text}
                   onChange={handleInputChange}
                 />
                 <TextField

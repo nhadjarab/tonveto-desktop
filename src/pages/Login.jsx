@@ -114,9 +114,9 @@ const Login = () => {
                 onChange={handleInputChange}
                 required
               />
-              <Link to="/register">
+              {/* <Link to="/register">
                 Vous n'avez pas de compte? en créer un maintenant.
-              </Link>
+              </Link> */}
               <LoadingButton
                 loading={loading}
                 type="submit"
