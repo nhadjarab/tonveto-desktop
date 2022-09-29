@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loading, Table } from "../components";
-import { Typography, Link, Button, LinearProgress } from "@mui/material";
+import { Typography, Button, LinearProgress } from "@mui/material";
 
 const Subscriptions = () => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -33,7 +33,8 @@ const Subscriptions = () => {
   };
 
   const columns = [
-    { field: "customer", headerName: "Client", flex: 2 },
+    { field: "client", headerName: "Client", flex: 2 },
+    { field: "email", headerName: "Email", flex: 2 },
     { field: "status", headerName: "Etat", flex: 1 },
     { field: "billing", headerName: "Facturation", flex: 1 },
     { field: "product", headerName: "Produit", flex: 1 },

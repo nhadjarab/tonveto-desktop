@@ -9,16 +9,16 @@ const petColumns = [
   { field: "species", headerName: "Espèce", flex: 1 },
   { field: "breed", headerName: "Race", flex: 1 },
   { field: "sex", headerName: "Sexe", flex: 1 },
-  { field: "crossbreed", headerName: "Croisé", flex: 1 },
-  { field: "sterilised", headerName: "Sterilisé", flex: 1 },
-  { field: "birth_date", headerName: "Date de Naissance", flex: 1 },
+  { field: "crossbreed", headerName: "Croisé(e)", flex: 1 },
+  { field: "sterilised", headerName: "Sterilisé(e)", flex: 1 },
+  { field: "birth_date", headerName: "Date de naissance", flex: 1 },
 ];
 const appointmentsColumns = [
   { field: "date", headerName: "Date", flex: 1 },
-  { field: "pet_name", headerName: "Pet Name", flex: 1 },
-  { field: "vet_name", headerName: "Vet", flex: 1 },
+  { field: "pet_name", headerName: "Animal", flex: 1 },
+  { field: "vet_name", headerName: "Vétérinaire", flex: 1 },
   { field: "clinic", headerName: "Clinique", flex: 2 },
-  { field: "full_address", headerName: "Adresse Compléte", flex: 2 },
+  { field: "full_address", headerName: "Adresse", flex: 2 },
 ];
 
 const User = () => {
@@ -57,12 +57,12 @@ const User = () => {
             date: appointement.date + " à " + appointement.time,
             clinic: appointement.clinic.name,
             full_address:
-              appointement.clinic.country +
-              " " +
-              appointement.clinic.city +
-              " " +
               appointement.clinic.address +
-              " ",
+              ", " +
+              appointement.clinic.city +
+              " , " +
+              appointement.clinic.country +
+              " , ",
           }));
           setRow({ ...data, appointments });
         } else {
@@ -84,7 +84,7 @@ const User = () => {
     <div>
       <UserInfo row={row} />
       <TonventoTabs
-        tabsTiles={["Pets", "Rendez-Vous"]}
+        tabsTiles={["Animaux", "Rendez-Vous"]}
         tabsContents={[
           <Table columns={petColumns} rows={row.pets} margin="15px" />,
           <Table

@@ -14,13 +14,11 @@ import { Typography } from "@mui/material";
 const vetColumns = [
   { field: "first_name", headerName: "Prénom", flex: 1 },
   { field: "last_name", headerName: "Nom", flex: 1 },
-  { field: "email", headerName: "Email", flex: 1 },
-  { field: "phone_number", headerName: "Tel", flex: 1 },
-  { field: "birth_date", headerName: "Date de Naissance", flex: 1 },
-  { field: "bank_details", headerName: "Bank Details", flex: 1 },
-  { field: "balance", headerName: "Balance", flex: 1 },
-  { field: "is_approved", headerName: "Approuvé", flex: 1 },
-  { field: "profile_complete", headerName: "Profile Complet", flex: 1 },
+  { field: "birth_date", headerName: "Date de naissance", flex: 1 },
+  { field: "profile_complete", headerName: "Profil complet", flex: 1 },
+  { field: "bank_details", headerName: "RIB", flex: 1 },
+  { field: "balance", headerName: "Solde", flex: 1 },
+  { field: "is_approved", headerName: "Approuvé(e)", flex: 1 },
 ];
 
 const SingleClinic = () => {

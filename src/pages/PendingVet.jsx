@@ -79,11 +79,10 @@ const PendingVet = () => {
   const columns = [
     { field: "first_name", headerName: "Prénom", flex: 1 },
     { field: "last_name", headerName: "Nom", flex: 1 },
+    { field: "birth_date", headerName: "Date de naissance", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
-    { field: "phone_number", headerName: "Tel", flex: 1 },
-    { field: "birth_date", headerName: "Date de Naissance", flex: 1 },
-    { field: "bank_details", headerName: "Bank Details", flex: 1 },
-    { field: "balance", headerName: "Balance", flex: 1 },
+    { field: "phone_number", headerName: "Téléphone", flex: 1 },
+    { field: "bank_details", headerName: "RIB", flex: 1 },
     {
       field: "Actions",
       flex: 1,
@@ -91,7 +90,7 @@ const PendingVet = () => {
         return (
           <div>
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               sx={{ mr: "5px" }}
               onClick={(event) => {
@@ -111,7 +110,7 @@ const PendingVet = () => {
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Vétérinaires En Attente
+        # Liste des vétérinaires en attente
       </Typography>
       {loadingApprouve && <LinearProgress />}
       <Table columns={columns} rows={rows} error={error} />

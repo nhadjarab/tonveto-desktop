@@ -18,6 +18,7 @@ const Invoices = () => {
   }, []);
 
   const columns = [
+    { field: "client", headerName: "Client", flex: 2 },
     { field: "email", headerName: "Email", flex: 2 },
     { field: "price", headerName: "Prix", flex: 1 },
     { field: "description", headerName: "Description", flex: 3 },

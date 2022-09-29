@@ -63,6 +63,7 @@ const createWindow = () => {
     const invoices = await stripe.invoices.list();
     return invoices.data.map((invoice) => ({
       id: invoice.id,
+      client: invoice.customer_name,
       email: invoice.customer_email,
       price: parseInt(invoice.amount_paid) / 100 + "€",
       pdf: invoice.invoice_pdf,
@@ -96,13 +97,13 @@ const createWindow = () => {
           id: subscription.id,
           status: subscription.status,
           created: formateDate(new Date(parseInt(subscription.created) * 1000)),
-          customer: customer.email,
+          client: customer.name,
+          email: customer.email,
           product: product?.name,
           billing: subscription.collection_method,
         };
       })
     );
-    console.log(subscriptions.data[0]);
     return populatedSubscriptions;
   });
 

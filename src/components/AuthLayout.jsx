@@ -25,16 +25,16 @@ import { useAuth } from "../context/AuthProvider";
 
 import Logout from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
-import MedicationIcon from '@mui/icons-material/Medication';
-import GiteIcon from '@mui/icons-material/Gite';
-import EventIcon from '@mui/icons-material/Event';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import DescriptionIcon from '@mui/icons-material/Description';
-import EuroIcon from '@mui/icons-material/Euro';
+import MedicationIcon from "@mui/icons-material/Medication";
+import GiteIcon from "@mui/icons-material/Gite";
+import EventIcon from "@mui/icons-material/Event";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import DescriptionIcon from "@mui/icons-material/Description";
+import EuroIcon from "@mui/icons-material/Euro";
 import AppLogo from "../assets/favicon.png";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const theme = createTheme({
   palette: {
@@ -225,7 +225,7 @@ const AuthLayout = () => {
                   <ListItemIcon sx={{ color: "#aaa" }}>
                     <HourglassBottomIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Vet en attente" />
+                  <ListItemText primary="Vétérinaires en attente" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -245,19 +245,19 @@ const AuthLayout = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton component={Link} to="/invoices">
-                  <ListItemIcon sx={{ color: "#aaa" }}>
-                    <DescriptionIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Factures" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
                 <ListItemButton component={Link} to="/subscriptions">
                   <ListItemIcon sx={{ color: "#aaa" }}>
                     <EuroIcon />
                   </ListItemIcon>
                   <ListItemText primary="Abonnement" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to="/invoices">
+                  <ListItemIcon sx={{ color: "#aaa" }}>
+                    <DescriptionIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Factures" />
                 </ListItemButton>
               </ListItem>
             </List>

@@ -33,7 +33,7 @@ const ClinicInfo = ({row}) => {
                 <EmailIcon />
                 <Typography variant="body2">
                   Adresse :{" "}
-                  <b>{row.clinic.address + ", " + row.clinic.zip_code}</b>
+                  <b>{row.clinic.address}</b>
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1}>
@@ -55,13 +55,13 @@ const ClinicInfo = ({row}) => {
               <Stack direction="row" spacing={1}>
                 <LocationCityIcon />
                 <Typography variant="body2">
-                  Ville : <b>{row.clinic.city}</b>
+                  Ville : <b>{row.clinic.city + ", " + row.clinic.zip_code}</b>
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1}>
                 <DoneOutlineIcon />
                 <Typography variant="body2">
-                  Approuvé :{" "}
+                  Approuvée :{" "}
                   <b>{row.clinic.owner.is_approved ? "Oui" : "Non"}</b>
                 </Typography>
               </Stack>

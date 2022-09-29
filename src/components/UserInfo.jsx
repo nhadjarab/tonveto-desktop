@@ -12,10 +12,11 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import KeyIcon from "@mui/icons-material/Key";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import PersonIcon from "@mui/icons-material/Person";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import EuroIcon from '@mui/icons-material/Euro';
 
-const UserInfo = ({ row, rating }) => {
+const UserInfo = ({ row, rating, vet }) => {
   return (
     <Paper sx={{ padding: 2, marginBottom: 4 }}>
       <Box align="center">
@@ -55,7 +56,7 @@ const UserInfo = ({ row, rating }) => {
             <Stack direction="row" spacing={1}>
               <PhoneIcon />
               <Typography variant="body2">
-                Tel : <b>{row.phone_number}</b>
+                Téléphone : <b>{row.phone_number}</b>
               </Typography>
             </Stack>
           </Stack>
@@ -65,22 +66,32 @@ const UserInfo = ({ row, rating }) => {
             <Stack direction="row" spacing={1}>
               <CalendarMonthIcon />
               <Typography variant="body2">
-                Né le : <b>{row.birth_date}</b>
+                Date de naissance : <b>{row.birth_date.substring(0, 10)}</b>
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
               <DoneOutlineIcon />
               <Typography variant="body2">
-                Profile :{" "}
+                Profil :{" "}
                 <b>{row.profile_complete ? "complet" : "incomplet"}</b>
               </Typography>
             </Stack>
-            <Stack direction="row" spacing={1}>
-              <PersonIcon />
-              <Typography variant="body2">
-                Type : <b>{row.type}</b>
-              </Typography>
-            </Stack>
+            {vet && (
+              <Stack direction="row" spacing={1}>
+                <AccountBalanceIcon />
+                <Typography variant="body2">
+                  RIB : <b>{row.bank_details}</b>
+                </Typography>
+              </Stack>
+            )}
+            {vet && (
+              <Stack direction="row" spacing={1}>
+                <EuroIcon />
+                <Typography variant="body2">
+                  SOLDE : <b>{row.balance}</b>
+                </Typography>
+              </Stack>
+            )}
           </Stack>
         </Grid>
       </Grid>

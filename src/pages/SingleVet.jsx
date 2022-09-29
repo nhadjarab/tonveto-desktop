@@ -15,19 +15,20 @@ import { Paper, Typography, Grid } from "@mui/material";
 
 const clinicColumns = [
   { field: "name", headerName: "Nom", flex: 1 },
-  { field: "country", headerName: "Pays", flex: 1 },
   { field: "address", headerName: "Adresse", flex: 1 },
+  { field: "city", headerName: "Ville", flex: 1 },
   { field: "zip_code", headerName: "Code Postal", flex: 1 },
-  { field: "phone_number", headerName: "Tel", flex: 1 },
-  { field: "is_approved", headerName: "Approuvé", flex: 1 },
+  { field: "country", headerName: "Pays", flex: 1 },
+  { field: "phone_number", headerName: "Téléphone", flex: 1 },
+  { field: "is_approved", headerName: "Approuvée", flex: 1 },
 ];
 const appointmentsColumns = [
   { field: "date", headerName: "Date", flex: 1 },
-  { field: "pet_name", headerName: "Pet Name", flex: 1 },
+  { field: "pet_name", headerName: "Animal", flex: 1 },
   { field: "breed", headerName: "Race", flex: 1 },
   { field: "sex", headerName: "Sexe", flex: 1 },
-  { field: "user_name", headerName: "User", flex: 1 },
-  { field: "user_email", headerName: "User Email", flex: 1 },
+  { field: "user_name", headerName: "Propriétaire", flex: 1 },
+  { field: "user_email", headerName: "Email", flex: 1 },
 ];
 
 const SingleVet = () => {
@@ -97,6 +98,7 @@ const SingleVet = () => {
       <UserInfo
         row={row.vetProfile}
         rating={row?.vetRating?._avg?.rating || 0}
+        vet={true}
       />
       <Typography variant="h4" align="center">
         Spécialités
@@ -133,7 +135,7 @@ const SingleVet = () => {
               <Review key={comment.id} comment={comment} />
             ))}
             {row.vetProfile.CommentVet.length === 0 && (
-              <Empty msg="Aucune spécialité à afficher" />
+              <Empty msg="Aucune évaluation à afficher" />
             )}
           </Paper>,
         ]}

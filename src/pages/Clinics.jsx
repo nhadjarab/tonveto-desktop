@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 const columns = [
   { field: "name", headerName: "Nom", flex: 2 },
-  { field: "country", headerName: "Pays", flex: 1 },
-  { field: "city", headerName: "Ville", flex: 1 },
   { field: "address", headerName: "Adresse", flex: 1 },
+  { field: "city", headerName: "Ville", flex: 1 },
   { field: "zip_code", headerName: "Code Postal", flex: 1 },
-  { field: "phone_number", headerName: "Tel", flex: 1 },
-  { field: "is_approved", headerName: "Approuvé", flex: 1 },
+  { field: "country", headerName: "Pays", flex: 1 },
+  { field: "phone_number", headerName: "Téléphone", flex: 1 },
+  { field: "is_approved", headerName: "Approuvée", flex: 1 },
 ];
 
 const Clinics = () => {
@@ -77,17 +77,17 @@ const Clinics = () => {
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={6} item>
-          <KPICard title="Nombre De Cliniques" value={numberOfClinics} />
+          <KPICard title="Nombre de cliniques" value={numberOfClinics} />
         </Grid>
         <Grid xs={6} item>
           <KPICard
-            title="Taux De Clinique Approuvée"
+            title="Taux de clinique approuvée"
             value={approvedClinicsPercentage}
           />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Cliniques
+        # Liste des cliniques
       </Typography>
       <Table
         columns={columns}

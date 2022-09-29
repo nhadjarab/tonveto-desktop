@@ -5,13 +5,13 @@ import { useEnv } from "../hooks/EnvHook";
 import { Typography, Grid } from "@mui/material";
 
 const columns = [
-  { field: "user_name", headerName: "User", flex: 1 },
-  { field: "user_email", headerName: "User Email", flex: 1 },
-  { field: "pet_name", headerName: "Pet Name", flex: 1 },
+  { field: "user_name", headerName: "Propriétaire", flex: 1 },
+  { field: "user_email", headerName: "Email", flex: 1 },
+  { field: "pet_name", headerName: "Animal", flex: 1 },
   { field: "breed", headerName: "Race", flex: 1 },
   { field: "date", headerName: "Date", flex: 1 },
-  { field: "vet_name", headerName: "Vet", flex: 1 },
-  { field: "vet_email", headerName: "Vet Email", flex: 1 },
+  { field: "vet_name", headerName: "Vétérinaire", flex: 1 },
+  { field: "vet_email", headerName: "Email du vétérinaire", flex: 1 },
 ];
 
 const Appointements = () => {
@@ -92,17 +92,17 @@ const Appointements = () => {
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={6} item>
-          <KPICard title="Nombre De Rendez-Vous" value={numberOfAppointments} />
+          <KPICard title="Nombre De Rendez-vous" value={numberOfAppointments} />
         </Grid>
         <Grid xs={6} item>
           <KPICard
-            title="Nombre De Rendez-Vous Ce Mois"
+            title="Nombre de Rendez-vous ce mois"
             value={numberOfAppointmentsThisMonth}
           />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Rendez-vous
+        # Liste des rendez-vous
       </Typography>
       <Table columns={columns} rows={rows} error={error} />
     </div>

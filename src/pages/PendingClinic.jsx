@@ -78,11 +78,11 @@ const PendingClinic = () => {
 
   const columns = [
     { field: "name", headerName: "Nom", flex: 2 },
-    { field: "country", headerName: "Pays", flex: 1 },
-    { field: "city", headerName: "Ville", flex: 1 },
     { field: "address", headerName: "Adresse", flex: 1 },
+    { field: "city", headerName: "Ville", flex: 1 },
     { field: "zip_code", headerName: "Code Postal", flex: 1 },
-    { field: "phone_number", headerName: "Tel", flex: 1 },
+    { field: "country", headerName: "Pays", flex: 1 },
+    { field: "phone_number", headerName: "Téléphone", flex: 1 },
     {
       field: "Actions",
       flex: 1,
@@ -90,7 +90,7 @@ const PendingClinic = () => {
         return (
           <div>
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               sx={{ mr: "5px" }}
               onClick={(event) => {
@@ -110,7 +110,7 @@ const PendingClinic = () => {
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Cliniques En Attente
+        # Liste des cliniques en attente
       </Typography>
       {loadingApprouve && <LinearProgress />}
       <Table columns={columns} rows={rows} error={error} />

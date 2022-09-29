@@ -8,14 +8,13 @@ import { Typography, Grid } from "@mui/material";
 const columns = [
   { field: "first_name", headerName: "Prénom", flex: 1 },
   { field: "last_name", headerName: "Nom", flex: 1 },
+  { field: "birth_date", headerName: "Date de naissance", flex: 1 },
   { field: "email", headerName: "Email", flex: 1 },
   { field: "phone_number", headerName: "Tel", flex: 1 },
-  { field: "birth_date", headerName: "Date de Naissance", flex: 1 },
-  { field: "bank_details", headerName: "Bank Details", flex: 1 },
-  { field: "balance", headerName: "Balance", flex: 1 },
-  { field: "type", headerName: "Type", flex: 1 },
-  { field: "is_approved", headerName: "Approuvé", flex: 1 },
-  { field: "profile_complete", headerName: "Profile Complet", flex: 1 },
+  { field: "bank_details", headerName: "RIB", flex: 1 },
+  { field: "balance", headerName: "Solde", flex: 1 },
+  { field: "profile_complete", headerName: "Profil complet", flex: 1 },
+  { field: "is_approved", headerName: "Approuvé(e)", flex: 1 },
 ];
 
 const Vets = () => {
@@ -87,23 +86,23 @@ const Vets = () => {
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={4} item>
-          <KPICard title="Nombre De Vétérinaire" value={numberOfVets} />
+          <KPICard title="Nombre de vétérinaire" value={numberOfVets} />
         </Grid>
         <Grid xs={4} item>
           <KPICard
-            title="Taux De Profile Incomplet"
+            title="Taux de profils incomplets"
             value={completProfilePercentage}
           />
         </Grid>
         <Grid xs={4} item>
           <KPICard
-            title="Taux De Profile Approuvé"
+            title="Taux de profils approuvés"
             value={approvedProfilePercentage}
           />
         </Grid>
       </Grid>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Vétérinaires
+        # Liste des vétérinaires
       </Typography>
       <Table
         columns={columns}
