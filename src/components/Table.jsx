@@ -9,7 +9,7 @@ const Table = ({ columns, rows, error, onRowClick, margin }) => {
       {error && <Alert severity="error">{error}</Alert>}
       <div
         style={{
-          height: 450,
+          height: 'calc(100vh - 200px)',
           width: "100%",
           marginTop: margin || "0px",
           marginBottom: margin || "0px",
