@@ -40,7 +40,7 @@ const Invoices = () => {
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Factures
+        # Liste des factures
       </Typography>
       <Table columns={columns} rows={invoices} error={error} />
     </div>

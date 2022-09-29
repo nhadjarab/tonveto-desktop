@@ -68,7 +68,7 @@ const Subscriptions = () => {
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        # Liste Des Abonnements
+        # Liste des abonnements
       </Typography>
       {loadingCancel && <LinearProgress />}
       <Table columns={columns} rows={subscriptions} error={error} />
