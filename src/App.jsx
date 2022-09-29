@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import {
   Login,
-  Register,
+  Profile,
   Home,
   Vets,
   Clinics,
@@ -37,6 +37,7 @@ const App = () => {
           </RequireAuth>
         }
       >
+        <Route path="/profile" element={<Profile />} />
         <Route path="/home" element={<Home />} />
         <Route path="/users/:userId" element={<User />} />
         <Route path="/vets" element={<Vets />} />

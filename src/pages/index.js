@@ -1,6 +1,7 @@
 export { default as Login } from "./Login";
 export { default as Register } from "./Register";
 export { default as Home } from "./Home";
+export { default as Profile } from "./Profile";
 export { default as User } from "./User";
 export { default as Clinics } from "./Clinics";
 export { default as SingleClinic } from "./SingleClinic";

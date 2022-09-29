@@ -23,6 +23,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAuth } from "../context/AuthProvider";
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logout from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
 import MedicationIcon from "@mui/icons-material/Medication";
@@ -135,6 +136,12 @@ const AuthLayout = () => {
                     {user.email}
                   </Typography>
                 </div>
+                <MenuItem component={Link} to="/profile">
+                  <ListItemIcon>
+                    <AccountCircleIcon/>
+                  </ListItemIcon>
+                  Profile
+                </MenuItem>
                 <Divider />
                 <MenuItem onClick={logout}>
                   <ListItemIcon>

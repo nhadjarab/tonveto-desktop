@@ -13,8 +13,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import KeyIcon from "@mui/icons-material/Key";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import EuroIcon from '@mui/icons-material/Euro';
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EuroIcon from "@mui/icons-material/Euro";
 
 const UserInfo = ({ row, rating, vet }) => {
   return (
@@ -28,10 +28,12 @@ const UserInfo = ({ row, rating, vet }) => {
             mb: "10px",
           }}
         >
-          {row.first_name[0]?.toUpperCase() || "?"}
+          {row.first_name[0]?.toUpperCase() || "A"}
         </Avatar>
         <Typography variant="h4">
-          {row.first_name.toUpperCase() + " " + row.last_name.toUpperCase()}
+          {row.first_name?.toUpperCase() + row.last_name?.toUpperCase()
+            ? row.first_name?.toUpperCase() + " " + row.last_name?.toUpperCase()
+            : "Admin"}
         </Typography>
         {rating != null && (
           <Rating name="read-only" value={rating} readOnly precision={0.1} />
@@ -66,14 +68,20 @@ const UserInfo = ({ row, rating, vet }) => {
             <Stack direction="row" spacing={1}>
               <CalendarMonthIcon />
               <Typography variant="body2">
-                Date de naissance : <b>{row.birth_date.substring(0, 10)}</b>
+                Date de naissance :{" "}
+                <b>
+                  {new Date(row.birth_date).getFullYear() +
+                    "-" +
+                    (new Date(row.birth_date).getMonth() + 1) +
+                    "-" +
+                    new Date(row.birth_date).getDate()}
+                </b>
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
               <DoneOutlineIcon />
               <Typography variant="body2">
-                Profil :{" "}
-                <b>{row.profile_complete ? "complet" : "incomplet"}</b>
+                Profil : <b>{row.profile_complete ? "complet" : "incomplet"}</b>
               </Typography>
             </Stack>
             {vet && (

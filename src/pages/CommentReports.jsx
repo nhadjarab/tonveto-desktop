@@ -25,7 +25,7 @@ const CommentReports = () => {
   const { apiUrl } = useEnv();
   const [expanded, setExpanded] = useState(false);
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = (panel) => (_event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -120,9 +120,39 @@ const CommentReports = () => {
 
         const data = await res.json();
         console.log(data);
-        setLoading(false);
         if (res.status === 200) {
-          setRows(data);
+          const reports = await Promise.all(
+            data.map(async (row) => {
+              const vetRes = await fetch(`${apiUrl}/vet/${row.vet_id}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${user.token}`,
+                  logged_in_id: user.userId,
+                },
+                signal,
+              });
+
+              const vet = await vetRes.json();
+              const ownerRes = await fetch(
+                `${apiUrl}/user/${row.comment.owner_id}`,
+                {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                    logged_in_id: user.userId,
+                  },
+                  signal,
+                }
+              );
+
+              const owner = await ownerRes.json();
+              return { ...row, vet, owner };
+            })
+          );
+          console.log(reports);
+          setRows(reports);
         } else {
           setError("Something went wrong, please try again");
         }
@@ -131,6 +161,7 @@ const CommentReports = () => {
         if (err.name === "AbortError") return;
         setError("Something went wrong, please try again");
       }
+      setLoading(false);
     };
 
     fetchCommentReports();
@@ -144,14 +175,14 @@ const CommentReports = () => {
     <div>
       {rows.length > 0 && (
         <Typography variant="h4" sx={{ mb: 4 }}>
-          # Liste Des Rapports Des Commentaires
+          # Liste des rapports des commentaires
         </Typography>
       )}
       {error && <Alert severity="error">{error}</Alert>}
       {loadingHandleAction && <LinearProgress />}
       <div>
         {rows.length === 0 && (
-          <Empty msg="Aucun rapport de commentaire à afficher" mt={10}/>
+          <Empty msg="Aucun rapport de commentaire à afficher" mt={10} />
         )}
         {rows.map((row) => (
           <Accordion
@@ -165,7 +196,13 @@ const CommentReports = () => {
               id={`${row.id}-header`}
             >
               <Typography variant="h6" sx={{ width: "33%", flexShrink: 0 }}>
-                {row.report_type}
+              <Typography variant="body1">
+                  {row.vet.vetProfile.first_name || row.vet.vetProfile.last_name
+                    ? row.vet.vetProfile.first_name.toUpperCase() +
+                      " " +
+                      row.vet.vetProfile.last_name.toUpperCase()
+                    : row.vet.vetProfile.email}
+                </Typography>
               </Typography>
               <Typography sx={{ color: "text.secondary" }}>
                 {row.description}
@@ -174,11 +211,11 @@ const CommentReports = () => {
             <AccordionDetails>
               <Box sx={{ padding: 2 }}>
                 <Typography variant="body1">
-                  {row.comment.first_name || row.comment.last_name
-                    ? row.comment.first_name.toUpperCase() +
+                  {row.owner.first_name || row.owner.last_name
+                    ? row.owner.first_name.toUpperCase() +
                       " " +
-                      row.comment.last_name.toUpperCase()
-                    : row.comment.email}
+                      row.owner.last_name.toUpperCase()
+                    : row.owner.email}
                 </Typography>
                 <Rating
                   name="read-only"
