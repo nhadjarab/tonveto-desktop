@@ -43,7 +43,8 @@ const Login = () => {
       });
       const loginData = await loginResponse.json();
       if (loginResponse.status !== 200) {
-        setUserError("Something went wrong, please try again");
+        setUserError(JSON.stringify(loginData));
+        setLaoding(false);
         return;
       }
       const token = loginData.jwtToken;
