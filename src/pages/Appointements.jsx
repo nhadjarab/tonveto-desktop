@@ -92,11 +92,11 @@ const Appointements = () => {
     <div>
       <Grid container spacing={3} sx={{ marginBottom: 8 }}>
         <Grid xs={6} item>
-          <KPICard title="Nombre De Rendez-vous" value={numberOfAppointments} />
+          <KPICard title="Nombre De rendez-vous" value={numberOfAppointments} />
         </Grid>
         <Grid xs={6} item>
           <KPICard
-            title="Nombre de Rendez-vous ce mois"
+            title="Nombre de rendez-vous ce mois"
             value={numberOfAppointmentsThisMonth}
           />
         </Grid>

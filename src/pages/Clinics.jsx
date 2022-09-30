@@ -81,7 +81,7 @@ const Clinics = () => {
         </Grid>
         <Grid xs={6} item>
           <KPICard
-            title="Taux de clinique approuvée"
+            title="Taux de clinique approuvées"
             value={approvedClinicsPercentage}
           />
         </Grid>

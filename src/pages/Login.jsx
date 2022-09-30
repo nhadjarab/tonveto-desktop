@@ -93,7 +93,7 @@ const Login = () => {
                 color="text.secondary"
                 mb={4}
               >
-                Bienvenu à Tonveto, Se connecter maintenant
+                Bienvenu à Tonveto. Veuillez vous connecter
               </Typography>
               {userError && <Alert severity="error">{userError}</Alert>}
               <TextField
