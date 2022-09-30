@@ -1,6 +1,6 @@
 {
   "name": "tonveto",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "An medical appointment scheduling app with veteranians",
   "author": {
     "name": "tonveto",
@@ -40,13 +40,24 @@
   },
   "build": {
     "extends": null,
+    "productName": "Tonveto",
     "mac": {
-      "icon": "build/favicon.icns"
-    },
+			"target": "dmg",
+      "icon": "build/favicon.icns",
+			"category": "public.app-category.utilities"
+		},
     "win": {
       "icon": "build/favicon.ico"
     },
-    "appId": "com.example.electron-cra",
+    "nsis": {
+			"installerIcon": "build/favicon.ico",
+			"uninstallerIcon": "build/favicon.ico",
+			"uninstallDisplayName": "Tonveto",
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true,
+			"createDesktopShortcut": "always"
+		},
+    "appId": "com.nassim.tonveto",
     "files": [
       "dist/**/*",
       "build/**/*",
