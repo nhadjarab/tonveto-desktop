@@ -13,6 +13,7 @@ import {
   Button,
   Stack,
   LinearProgress,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -195,36 +196,46 @@ const CommentReports = () => {
               aria-controls={`${row.id}-content`}
               id={`${row.id}-header`}
             >
-              <Typography variant="h6" sx={{ width: "33%", flexShrink: 0 }}>
-              <Typography variant="body1">
-                  {row.vet.vetProfile.first_name || row.vet.vetProfile.last_name
-                    ? row.vet.vetProfile.first_name.toUpperCase() +
-                      " " +
-                      row.vet.vetProfile.last_name.toUpperCase()
-                    : row.vet.vetProfile.email}
+              <Box sx={{ width: "100%" }}>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography variant="body1">
+                      {row.owner.first_name || row.owner.last_name
+                        ? row.owner.first_name + " " + row.owner.last_name
+                        : row.owner.email}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} align="right">
+                    <Rating
+                      name="read-only"
+                      value={row.comment?.rating?.rating || 0}
+                      readOnly
+                      size="small"
+                      precision={0.1}
+                    />
+                  </Grid>
+                </Grid>
+                <Typography
+                  varinat="body2"
+                  color="text.secondary"
+                  align="justify"
+                  sx={{ width: "85%",mt:1 }}
+                >
+                  {row.comment.text}
                 </Typography>
-              </Typography>
-              <Typography sx={{ color: "text.secondary" }}>
-                {row.description}
-              </Typography>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>
-              <Box sx={{ padding: 2 }}>
+              <Box sx={{ p: 1, backgroundColor: "#f2f2f2", mb: 4 }}>
                 <Typography variant="body1">
-                  {row.owner.first_name || row.owner.last_name
-                    ? row.owner.first_name.toUpperCase() +
+                  {row.vet.vetProfile.first_name || row.vet.vetProfile.last_name
+                    ? row.vet.vetProfile.first_name +
                       " " +
-                      row.owner.last_name.toUpperCase()
-                    : row.owner.email}
+                      row.vet.vetProfile.last_name
+                    : row.vet.vetProfile.email}
                 </Typography>
-                <Rating
-                  name="read-only"
-                  value={row.comment?.rating?.rating || 0}
-                  readOnly
-                  precision={0.1}
-                />
-                <Typography varinat="body2" color="text.secondary">
-                  {row.comment.text}
+                <Typography sx={{ color: "text.secondary", mt: 1 }}>
+                  {row.description}
                 </Typography>
               </Box>
               <Stack direction="row-reverse">
