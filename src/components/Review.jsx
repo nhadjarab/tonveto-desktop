@@ -1,4 +1,5 @@
 import { Typography, Box, Rating, Avatar } from "@mui/material";
+import { formateDate } from "../utils/functions";
 
 const Review = ({ comment }) => {
   return (
@@ -39,11 +40,7 @@ const Review = ({ comment }) => {
           </Box>
         </Box>
         <Typography variant="body2" color="text.secondary">
-          {new Date(comment.date).getFullYear() +
-            "-" +
-            (new Date(comment.date).getMonth() + 1) +
-            "-" +
-            new Date(comment.date).getDate()}
+          {formateDate(new Date(comment.date))}
         </Typography>
       </Box>
 
