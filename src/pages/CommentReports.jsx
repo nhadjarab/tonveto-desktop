@@ -16,6 +16,7 @@ import {
   Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { formateDate } from "../utils/functions";
 
 const CommentReports = () => {
   const [rows, setRows] = useState([]);
@@ -199,10 +200,13 @@ const CommentReports = () => {
               <Box sx={{ width: "100%" }}>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography variant="body1">
+                    <Typography variant="body1" gutterBottom>
                       {row.owner.first_name || row.owner.last_name
                         ? row.owner.first_name + " " + row.owner.last_name
                         : row.owner.email}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {formateDate(new Date(row.comment.date))}
                     </Typography>
                   </Grid>
                   <Grid item xs={6} align="right">
@@ -219,7 +223,7 @@ const CommentReports = () => {
                   varinat="body2"
                   color="text.secondary"
                   align="justify"
-                  sx={{ width: "85%",mt:1 }}
+                  sx={{ width: "85%", mt: 1 }}
                 >
                   {row.comment.text}
                 </Typography>
