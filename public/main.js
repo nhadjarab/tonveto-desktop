@@ -218,6 +218,13 @@ const createWindow = () => {
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
+  ipcMain.removeAllListeners();
+  ipcMain.removeHandler('getInvoices');
+  ipcMain.removeHandler('getSubscriptions');
+  ipcMain.removeHandler('getCanceledSubscriptions');
+  ipcMain.removeHandler('pauseSubscription');
+  ipcMain.removeHandler('cancelSubscription');
+  ipcMain.removeHandler('reactivateSubscription');
   if (process.platform !== "darwin") app.quit();
 });
 
