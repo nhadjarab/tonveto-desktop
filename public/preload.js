@@ -4,8 +4,13 @@ contextBridge.exposeInMainWorld("server", {
   apiUrl: process.env.API_BASE_URL,
   getInvoices: () => ipcRenderer.invoke("getInvoices"),
   getSubscriptions: () => ipcRenderer.invoke("getSubscriptions"),
-  CancelSubscription: (subscription) =>
-    ipcRenderer.invoke("CancelSubscription", subscription),
+  getCanceledSubscriptions: () => ipcRenderer.invoke("getCanceledSubscriptions"),
+  pauseSubscription: (subscription) =>
+    ipcRenderer.invoke("pauseSubscription", subscription),
+  cancelSubscription: (subscription) =>
+    ipcRenderer.invoke("cancelSubscription", subscription),
+  reactivateSubscription: (subscription) =>
+    ipcRenderer.invoke("reactivateSubscription", subscription),
   onDownloadCompleted: (setMessage, setType) => {
     ipcRenderer.on("file-completed", (_event, path) => {
       setMessage("Téléchargement terminé ... Lien : " + path);
