@@ -135,7 +135,7 @@ const Subscriptions = () => {
       </Typography>
       {loadingCancel && <LinearProgress />}
       <TonventoTabs
-        tabsTiles={["Active", "Annulée"]}
+        tabsTiles={["Actif", "Annulé"]}
         tabsContents={[
           <Table columns={columns} rows={subscriptions} error={error} />,
           <Table
