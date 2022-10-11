@@ -81,8 +81,9 @@ const PendingVet = () => {
     { field: "last_name", headerName: "Nom", flex: 1 },
     { field: "birth_date", headerName: "Date de naissance", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
-    { field: "phone_number", headerName: "Téléphone", flex: 1 },
+    { field: "identification_order", headerName: "Numéro ordinal", flex: 1 },
     { field: "bank_details", headerName: "RIB", flex: 1 },
+    { field: "phone_number", headerName: "Téléphone", flex: 1 },
     {
       field: "Actions",
       flex: 1,

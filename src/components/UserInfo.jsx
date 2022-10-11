@@ -15,6 +15,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EuroIcon from "@mui/icons-material/Euro";
+import BadgeIcon from '@mui/icons-material/Badge';
 
 const UserInfo = ({ row, rating, vet }) => {
   return (
@@ -47,6 +48,12 @@ const UserInfo = ({ row, rating, vet }) => {
               <Typography variant="body2">
                 {" "}
                 ID : <b>{row.id}</b>
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <BadgeIcon />
+              <Typography variant="body2">
+                Numéro ordinal : <b>{row.identification_order}</b>
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1}>

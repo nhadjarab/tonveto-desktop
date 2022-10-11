@@ -7,6 +7,7 @@ import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import FlagIcon from "@mui/icons-material/Flag";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 
+
 const ClinicInfo = ({row}) => {
   return (
     <Paper sx={{ padding: 2, marginBottom: 4 }}>
